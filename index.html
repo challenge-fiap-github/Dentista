@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OdontoVision — Registro de Consulta</title>
+
+  <!-- Fonte -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="ov-header">
+    <div class="ov-container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none" role="img" aria-label="OdontoVision">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="64" y2="64">
+                <stop offset="0%" stop-color="#1E90FF"/>
+                <stop offset="100%" stop-color="#10B981"/>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="30" stroke="url(#g)" stroke-width="4" fill="none"/>
+            <path d="M18 36c0-8 6-14 14-14s14 6 14 14-6 14-14 14" stroke="url(#g)" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <span class="brand-name">OdontoVision</span>
+      </div>
+      <nav class="top-actions" style="gap:8px;display:flex;align-items:center;">
+        <button id="btnDarkMode" class="btn ghost" aria-label="Alternar tema">🌓</button>
+        <button id="btnLogout" class="btn ghost" aria-label="Sair">Sair</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="ov-main">
+    <section class="ov-container">
+      <div class="card">
+        <div class="card-header">
+          <h1>Registro de Consulta</h1>
+          <p class="subtitle">Preencha os campos da consulta. Os rascunhos são salvos automaticamente.</p>
+        </div>
+
+        <form id="consultaForm" novalidate>
+          <div class="grid">
+            <div class="field">
+              <label for="paciente">Nome do Paciente <span class="req">*</span></label>
+              <input type="text" id="paciente" name="paciente" placeholder="Ex.: Maria da Silva" required maxlength="80" />
+              <small class="hint"><span data-count="paciente">0</span>/80</small>
+            </div>
+
+            <div class="field">
+              <label for="cpf">CPF <span class="req">*</span></label>
+              <input type="text" id="cpf" name="cpf" inputmode="numeric" placeholder="000.000.000-00" required />
+              <small class="hint">Será validado automaticamente.</small>
+            </div>
+
+            <div class="field">
+              <label for="procedimento">Procedimento <span class="req">*</span></label>
+              <input list="procedimentos" id="procedimento" name="procedimento" placeholder="Ex.: Restauração de resina" required maxlength="60" />
+              <datalist id="procedimentos">
+                <option value="Profilaxia (limpeza)"></option>
+                <option value="Restauração de resina"></option>
+                <option value="Extração dentária"></option>
+                <option value="Tratamento de canal"></option>
+                <option value="Aplicação de flúor"></option>
+                <option value="Raspagem supragengival"></option>
+                <option value="Clareamento dental"></option>
+                <option value="Cimentação de coroa/prótese"></option>
+              </datalist>
+              <small class="hint"><span data-count="procedimento">0</span>/60</small>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="field full">
+              <label for="executado">O que foi feito na consulta <span class="req">*</span></label>
+              <textarea id="executado" name="executado" rows="5" placeholder="Descreva as etapas realizadas, materiais, dentes envolvidos..." required maxlength="800"></textarea>
+              <small class="hint"><span data-count="executado">0</span>/800</small>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="field full">
+              <label for="prescricao">Prescrição (medicamentos/orientações)</label>
+              <textarea id="prescricao" name="prescricao" rows="4" placeholder="Ex.: Ibuprofeno 400mg 8/8h por 3 dias; enxágue com clorexidina..." maxlength="500"></textarea>
+              <small class="hint"><span data-count="prescricao">0</span>/500</small>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn ghost" id="btnLimpar">Limpar</button>
+            <div class="spacer"></div>
+            <button type="submit" class="btn primary">Salvar Registro</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de sucesso -->
+  <dialog id="successModal" class="modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>✔ Registro Enviado</h2>
+        <button class="btn icon" id="closeSuccess" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-content">
+        <p>O registro foi enviado com sucesso para a OdontoVision.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn primary" id="okSuccess">OK</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Toast (mensagens curtas) -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <footer class="ov-footer">
+    <div class="ov-container">
+      <small>© <span id="year"></span> OdontoVision. Saúde com visão de futuro.</small>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
