@@ -66,13 +66,20 @@ function monthIndex(iso) {
 
 const MONTHS_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
+// --- helper central para montar o motivo ---
+function getMotivo(obj) {
+  const s = (obj.status || (obj.suspicious ? 'atencao' : 'normal')).toLowerCase();
+  if (s !== 'atencao') return '—';
+  return obj.motivos || obj.motivo_atencao || obj.attentionReason || '—';
+}
+
 // ============================
 // Renderização da Tabela
 // ============================
 function rowHtml(item) {
   const s = (item.status || (item.suspicious ? 'atencao' : 'normal')).toLowerCase();
   const chip = `<span class="${badgeClassFor(item.status, item.suspicious)}">${s.replace('_', ' ')}</span>`;
-  const motivo = s === 'atencao' ? (item.attentionReason || '—') : '—';
+  const motivo = getMotivo(item);
 
   return `
     <tr>
@@ -293,9 +300,10 @@ async function verDetalhe(id) {
   }
 }
 
+// 2) renderDetail
 function renderDetail(d) {
   const chip = `<span class="${badgeClassFor(d.status, d.suspicious)}">${(d.status || '').replace('_',' ')}</span>`;
-  const motivo = (d.status || '').toLowerCase() === 'atencao' ? (d.attentionReason || '—') : '—';
+  const motivo = getMotivo(d);
   const sexoStr = (d.paciente?.sexo || '') ? ` (${d.paciente.sexo})` : '';
 
   return `
@@ -304,8 +312,8 @@ function renderDetail(d) {
        <b>CPF:</b> ${d.paciente?.cpf ?? '—'}</p>
 
     <h3>Consulta</h3>
-    <p><b>Procedimento:</b> ${d.procedimento}<br>
-       <b>Executado:</b> ${d.executado}<br>
+    <p><b>Procedimento:</b> ${d.procedimento || '—'}<br>
+       <b>Executado:</b> ${d.executado || '—'}<br>
        <b>Prescrição:</b> ${d.prescricao || '—'}</p>
 
     <h3>Dentista</h3>

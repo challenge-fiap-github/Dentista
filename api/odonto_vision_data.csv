@@ -117,11 +117,11 @@ id,paciente_nome,cpf,procedimento,executado,prescricao,dentista,created_at,fraud
 52,Queila Azevedo,24252627383,Tratamento de canal,Canal dente 33,,Dra. Beatriz Luz,2025-05-01 09:30:00,1,atencao,False,,Clareamento seguido de tratamento de canal em até 7 dias. | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
 76,Kevin Duarte,43454647572,Profilaxia (limpeza),Higienização e polimento,,Dra. Ana Clara,2025-05-01 10:20:00,0,atencao,True,Profilaxia em 2025-09-05 → Canal em 2025-09-17 (≤ 15 dias),Clareamento dental repetido em intervalo de até 14 dias.,
 112,Iara Campos,69717273848,Aplicação de flúor,Verniz neutro,,Dra. Beatriz Luz,2025-05-01 10:40:00,0,normal,False,,,
-88,Thais Bueno,51535455650,Tratamento de canal,Canal dente 45,,Dra. Beatriz Luz,2025-05-01 11:45:00,1,normal,False,,,
-16,Sofia Alves,88990011223,Tratamento de canal,Canal dente 24,,Dra. Ana Clara,2025-05-01 12:45:00,1,normal,False,,,
-100,Debora Lima,60626364749,Tratamento de canal,Canal dente 17,,Dra. Beatriz Luz,2025-05-01 13:10:00,1,normal,False,,,
+88,Thais Bueno,51535455650,Tratamento de canal,Canal dente 45,,Dra. Beatriz Luz,2025-05-01 11:45:00,1,atencao,False,,Possível duplicidade: mesmo procedimento e dente lançados no mesmo dia. | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
+16,Sofia Alves,88990011223,Tratamento de canal,Canal dente 24,,Dra. Ana Clara,2025-05-01 12:45:00,1,atencao,False,,Clareamento dental repetido em intervalo de até 14 dias. | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
+100,Debora Lima,60626364749,Tratamento de canal,Canal dente 17,,Dra. Beatriz Luz,2025-05-01 13:10:00,1,atencao,False,,Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
 64,Zeca Moura,33343536472,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2025-05-01 15:10:00,0,normal,False,,,
-4,Maria Souza,98765432100,Tratamento de canal,Canal dente 36,,Dr. Pedro Lima,2025-05-01 15:30:00,0,normal,False,,,
+4,Maria Souza,98765432100,Tratamento de canal,Canal dente 36,,Dr. Pedro Lima,2025-05-01 15:30:00,0,atencao,False,,Procedimentos potencialmente incompatíveis no mesmo dia (ex.: profilaxia × canal/extração ou clareamento × canal). | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
 113,Jonas Pires,70727374859,Profilaxia (limpeza),Profilaxia completa,,Dr. Pedro Lima,2025-06-08 09:15:00,0,normal,False,,,
 29,Paulo Nunes,55667788990,Tratamento de canal,Canal dente 25,,Dra. Ana Clara,2025-06-08 09:20:00,1,atencao,False,,Prescrição forte (antibiótico/anti-inflamatório) sem procedimento invasivo no mesmo dia.,
 65,Beatriz Salles,34353637483,Profilaxia (limpeza),Profilaxia preventiva,,Dra. Ana Clara,2025-06-08 09:30:00,0,normal,False,,,
@@ -159,16 +159,16 @@ id,paciente_nome,cpf,procedimento,executado,prescricao,dentista,created_at,fraud
 116,Lucas Antunes,72747576871,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-09-01 09:00:00,0,atencao,True,Profilaxia em 2025-07-01 → Canal em 2025-07-13 (≤ 15 dias),Clareamento dental repetido em intervalo de até 14 dias.,
 80,Nathalia Cruz,46484950605,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-01 09:00:00,0,atencao,True,Profilaxia em 2025-09-10 → Canal em 2025-09-23 (≤ 15 dias),Profilaxia seguida de tratamento de canal em até 15 dias.,
 68,Elisa Campos,37383940516,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-01 09:05:00,0,atencao,True,Profilaxia em 2025-09-07 → Canal em 2025-09-19 (≤ 15 dias),Possível duplicidade: mesmo procedimento e dente lançados no mesmo dia.,
-32,Renato Dias,77889900112,Tratamento de canal,Canal dente 13,,Dra. Beatriz Luz,2025-09-01 09:15:00,1,normal,False,,,
-128,Tiago Martins,80718384959,Tratamento de canal,Canal dente 32,,Dra. Beatriz Luz,2025-09-01 09:35:00,1,normal,False,,,
+32,Renato Dias,77889900112,Tratamento de canal,Canal dente 13,,Dra. Beatriz Luz,2025-09-01 09:15:00,1,atencao,False,,Clareamento seguido de tratamento de canal em até 7 dias. | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
+128,Tiago Martins,80718384959,Tratamento de canal,Canal dente 32,,Dra. Beatriz Luz,2025-09-01 09:35:00,1,atencao,False,,Possível duplicidade: mesmo procedimento e dente lançados no mesmo dia. | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
 92,William Souza,54565758683,Tratamento de canal,Canal dente 28,,Dra. Beatriz Luz,2025-09-01 10:30:00,1,normal,False,,,
 8,Felipe Santos,33445566778,Tratamento de canal,Canal dente 21,,Dr. Pedro Lima,2025-09-01 10:50:00,0,normal,False,,,
-56,Tadeu Ramos,27282930416,Tratamento de canal,Canal dente 44,,Dra. Beatriz Luz,2025-09-01 12:05:00,1,atencao,False,,Clareamento dental repetido em intervalo de até 14 dias. | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
+56,Tadeu Ramos,27282930416,Tratamento de canal,Canal dente 44,,Dra. Beatriz Luz,2025-09-01 12:05:00,1,normal,False,,,
 104,Caio Prado,63646667782,Restauração de resina,Restauração dente 14,,Dra. Beatriz Luz,2025-09-01 14:45:00,0,normal,False,,,
 20,Diego Costa,12131415161,Tratamento de canal,Canal dente 11,,Dr. Pedro Lima,2025-09-01 16:55:00,0,normal,False,,,
-117,Lucas Antunes,72747576871,Tratamento de canal,Canal dente 36,,Dra. Ana Clara,2025-10-08 08:50:00,1,atencao,False,,Anotação de 'boca saudável' seguida de canal/extração em até 15 dias. | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
+117,Lucas Antunes,72747576871,Tratamento de canal,Canal dente 36,,Dra. Ana Clara,2025-10-08 08:50:00,1,normal,False,,,
 9,Laura Martins,44556677889,Profilaxia (limpeza),Profilaxia básica,,Dra. Beatriz Luz,2025-10-08 09:00:00,0,normal,False,,,
-105,Daniel Souza,64656768793,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2025-10-08 09:00:00,0,atencao,True,Profilaxia em 2025-03-01 → Canal em 2025-03-12 (≤ 15 dias),Dois ou mais tratamentos de canal em até 10 dias para o mesmo paciente.,
+105,Daniel Souza,64656768793,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2025-10-08 09:00:00,0,normal,False,,,
 21,João Silva,12345678901,Restauração de resina,Restauração dente 17,,Dra. Ana Clara,2025-10-08 09:10:00,0,normal,False,,,
 81,Nathalia Cruz,46484950605,Tratamento de canal,Canal dente 18,,Dra. Ana Clara,2025-10-08 10:15:00,1,normal,False,,,
 129,Úrsula Ramos,81728485960,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-08 11:15:00,0,normal,False,,,
@@ -179,7 +179,7 @@ id,paciente_nome,cpf,procedimento,executado,prescricao,dentista,created_at,fraud
 57,Úrsula Neves,28293031427,Restauração de resina,Restauração dente 45,,Dra. Ana Clara,2025-10-08 16:00:00,0,normal,False,,,
 10,Laura Martins,44556677889,Aplicação de flúor,Aplicado verniz de flúor,,Dra. Beatriz Luz,2025-11-15 09:20:00,0,normal,False,,,
 34,Marcos Melo,99001122334,Profilaxia (limpeza),Profilaxia leve,,Dr. Pedro Lima,2025-11-15 10:00:00,0,normal,False,,,
-106,Daniel Souza,64656768793,Tratamento de canal,Canal dente 26,,Dra. Ana Clara,2025-11-15 10:10:00,1,atencao,False,,Clareamento dental repetido em intervalo de até 14 dias. | Profilaxia seguida de tratamento de canal em até 15 dias.,Profilaxia seguida de tratamento de canal em até 15 dias.
+106,Daniel Souza,64656768793,Tratamento de canal,Canal dente 26,,Dra. Ana Clara,2025-11-15 10:10:00,1,normal,False,,,
 22,Maria Souza,98765432100,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-11-15 10:30:00,0,normal,False,,,
 118,Mariana Prado,73757677882,Cimentação de coroa/prótese,Cimentação coroa 17,,Dr. Pedro Lima,2025-11-15 10:30:00,0,normal,False,,,
 70,Fabio Baroni,38404142527,Controle de retorno,Sem alterações,,Dr. Pedro Lima,2025-11-15 14:20:00,0,normal,False,,,
@@ -188,10 +188,10 @@ id,paciente_nome,cpf,procedimento,executado,prescricao,dentista,created_at,fraud
 46,Mariana Teixeira,20212223349,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-11-15 18:10:00,0,normal,False,,,
 82,Otávio Leme,47495051616,Clareamento dental,Segunda sessão,,Dr. Pedro Lima,2025-11-15 18:20:00,0,normal,False,,,
 58,Vinicius Reis,29303132438,Clareamento dental,Segunda sessão,,Dr. Pedro Lima,2025-11-15 18:30:00,0,normal,False,,,
-95,Zélia Ramos,57596061716,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2025-12-22 08:40:00,0,atencao,True,Profilaxia em 2025-09-03 → Canal em 2025-09-14 (≤ 15 dias),Dois ou mais tratamentos de canal em até 10 dias para o mesmo paciente.,
+95,Zélia Ramos,57596061716,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2025-12-22 08:40:00,0,normal,False,,,
 131,Wagner Teles,83748687982,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-12-22 09:00:00,0,normal,False,,,
 47,Nicolas Prado,21222324350,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-12-22 10:05:00,0,normal,False,,,
-59,Wesley Amorim,30313233449,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2025-12-22 10:15:00,0,atencao,True,Profilaxia em 2025-09-09 → Canal em 2025-09-22 (≤ 15 dias),Prescrição forte (antibiótico/anti-inflamatório) sem procedimento invasivo no mesmo dia.,
+59,Wesley Amorim,30313233449,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2025-12-22 10:15:00,0,normal,False,,,
 83,Priscila Nunes,48505152627,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-12-22 11:05:00,0,normal,False,,,
 11,Paulo Nunes,55667788990,Restauração de resina,Restauração dente 14,,Dra. Ana Clara,2025-12-22 13:00:00,0,normal,False,,,
 23,Carlos Braga,10293847566,Controle de retorno,Sem queixas,,Dra. Beatriz Luz,2025-12-22 14:00:00,0,normal,False,,,
