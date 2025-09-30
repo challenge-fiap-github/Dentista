@@ -44,35 +44,15 @@ if "id" not in raw_df.columns:
 if "created_at" not in raw_df.columns:
     raw_df["created_at"] = datetime.now().isoformat()
 
-# Coluna status (default = normal para o monitor de fraudes)
 if "status" not in raw_df.columns:
     raw_df["status"] = "normal"
 
-# ======================
-# Regra: limpeza -> canal em 15 dias  => suspeito
-# ======================
-    # coluna de motivo
-    if "attention_reason" not in df.columns:
-        df["attention_reason"] = ""
+# >>> ADICIONE:
+if "motivo_atencao" not in raw_df.columns:
+    raw_df["motivo_atencao"] = ""
 
-    # para cada CPF, ordena por data e busca padrão limpeza -> canal em 15 dias
-    for cpf, g in df.groupby("cpf"):
-        g = g.sort_values("created_at")
-        for i in range(len(g) - 1):
-            p1 = str(g.iloc[i]["procedimento"]).lower()
-            p2 = str(g.iloc[i + 1]["procedimento"]).lower()
-            d1 = g.iloc[i]["created_at"]
-            d2 = g.iloc[i + 1]["created_at"]
-            if "profilaxia" in p1 and ("canal" in p2 or "tratamento de canal" in p2):
-                if pd.notna(d1) and pd.notna(d2) and (d2 - d1) <= timedelta(days=15):
-                    df.loc[g.index[i + 1], "suspicious"] = True
-                    df.loc[g.index[i + 1], "attention_reason"] = (
-                        f"Profilaxia em {d1.date()} → Tratamento de canal em {d2.date()} (≤ 15 dias)"
-                    )
-                    if "status" in df.columns:
-                        st = str(df.loc[g.index[i + 1], "status"]).strip().lower()
-                        if st == "" or st == "normal":
-                            df.loc[g.index[i + 1], "status"] = "atencao"
+if "suspicious" not in raw_df.columns:
+    raw_df["suspicious"] = False
 
 # ======================
 # Treinar modelo fraude (se houver coluna numérica 'fraude')
@@ -307,10 +287,11 @@ def marcar_suspeitas_multiplas_regras(df: pd.DataFrame) -> pd.DataFrame:
     else:
         df["suspicious"] = df["suspicious"].fillna(False)
 
-    if "attention_reason" not in df.columns:
-        df["attention_reason"] = ""
+    # Troque attention_reason por motivo_atencao
+    if "motivo_atencao" not in df.columns:
+        df["motivo_atencao"] = ""
     else:
-        df["attention_reason"] = df["attention_reason"].fillna("")
+        df["motivo_atencao"] = df["motivo_atencao"].fillna("")
 
     # processa por paciente (cpf)
     for cpf, g in df.groupby("cpf"):
@@ -329,7 +310,6 @@ def marcar_suspeitas_multiplas_regras(df: pd.DataFrame) -> pd.DataFrame:
             # ---------- Regra 6: prescrição forte sem procedimento compatível ----------
             presc = _kw(g.iloc[i]["prescricao"])
             if any(k in presc for k in MEDS_KEYWORDS):
-                # compatível: canal, extração, raspagem pesada, cirurgia...
                 compat = any(k in pi for k in ["canal", "extraç", "raspagem", "cirurg"])
                 if not compat:
                     reasons.append("Prescrição farmacológica sem procedimento clínico compatível")
@@ -363,7 +343,6 @@ def marcar_suspeitas_multiplas_regras(df: pd.DataFrame) -> pd.DataFrame:
                     dent_i = _kw(g.iloc[i]["dentista"])
                     dent_j = _kw(g.iloc[i+1]["dentista"])
                     if dent_i and dent_j and dent_i != dent_j and delta <= timedelta(days=7):
-                        # semelhante se compartilha palavra-chave
                         sem = any(k in pi and k in pj for k in ["canal", "restaura", "resina", "profilaxia", "extraç", "coroa", "prótese", "raspagem"])
                         if sem:
                             reasons.append(f"Troca de dentista em {delta.days} dia(s) para procedimento semelhante")
@@ -373,7 +352,6 @@ def marcar_suspeitas_multiplas_regras(df: pd.DataFrame) -> pd.DataFrame:
                         reasons.append(f"Dois canais próximos (dentes {ti or '?'} e {tj or '?'}) em ≤ 30 dias")
 
             # ---------- Regra 4: 3+ atendimentos em ≤14d ----------
-            # janela centrada no registro atual (avalia próximos)
             cnt14 = 1
             for k in range(i+1, len(g)):
                 if pd.notna(g.iloc[k]["created_at"]) and pd.notna(di):
@@ -387,10 +365,9 @@ def marcar_suspeitas_multiplas_regras(df: pd.DataFrame) -> pd.DataFrame:
                 j = idxs[i]
                 df.loc[j, "suspicious"] = True
                 # agrega com o que já tinha
-                prev = _kw(df.loc[j, "attention_reason"])
+                prev = _kw(df.loc[j, "motivo_atencao"])
                 all_reasons = " | ".join([r for r in [prev] + reasons if r])
-                df.loc[j, "attention_reason"] = all_reasons
-                # eleva status para atenção se estiver vazio/normal
+                df.loc[j, "motivo_atencao"] = all_reasons
                 st = _kw(df.loc[j, "status"]) if "status" in df.columns else ""
                 if st in ("", "normal", "novo"):
                     df.loc[j, "status"] = "atencao"
