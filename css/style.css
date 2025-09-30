@@ -178,3 +178,7 @@ body{
 /* Dark tweaks */
 :root.dark .ov-table thead th{ background:rgba(255,255,255,0.04); }
 :root.dark .ov-table tbody td{ border-bottom:1px solid rgba(255,255,255,0.06); }
+/* ===== Pagination (Admin) ===== */
+#paginacao.actions { justify-content: center; gap: 8px; flex-wrap: wrap; }
+#paginacao .btn { min-width: 40px; padding: 8px 12px; }
+#paginacao .ellipsis { padding: 0 6px; opacity: .6; user-select: none; }

@@ -1,267 +1,206 @@
-// ====== Guarda de rota (login + papel admin opcional) ======
-(function guard(){
-  const logged = localStorage.getItem('ov-auth');
-  const role = localStorage.getItem('ov-auth-role');
-  if(!logged){ window.location.href = 'login.html'; return; }
-  // Se quiser obrigar papel admin, descomente:
-  // if(role !== 'admin'){ window.location.href = 'index.html'; }
-})();
+// ============================
+// Configuração da API
+// ============================
+const API_BASE = 'http://127.0.0.1:5001/api'; // ajuste se publicar online
 
-// ====== Tema persistente ======
-(function initTheme(){
-  const saved = localStorage.getItem('ov-theme');
-  if (saved === 'dark') document.documentElement.classList.add('dark');
-})();
-document.getElementById('btnDarkMode').addEventListener('click', () => {
-  document.documentElement.classList.toggle('dark');
-  localStorage.setItem('ov-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-});
-
-// Header
-document.getElementById('year').textContent = new Date().getFullYear();
-document.getElementById('btnLogout').addEventListener('click', () => {
-  localStorage.removeItem('ov-auth');
-  localStorage.removeItem('ov-auth-role');
-  window.location.href = 'login.html';
-});
-
-// ====== Config da API (ajuste a URL da sua API) ======
-const API_BASE = 'http://localhost:8080/api'; // <== TROQUE PELA SUA BASE
-const PAGE_SIZE = 10;
-
-const state = {
-  q: '',
-  status: '',
-  start: '',
-  end: '',
-  page: 0,
-  totalPages: 0
-};
-
-// Toast
-const toast = document.getElementById('toast');
-function showToast(msg, ms=2400){
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'), ms);
-}
-
-// Helpers API
-function authHeaders() {
-  // Se você tiver token JWT/Session, recupere de localStorage
-  const token = localStorage.getItem('ov-token'); // opcional
-  return token ? { 'Authorization': `Bearer ${token}` } : {};
-}
 async function apiGet(path, params = {}) {
-  const qs = new URLSearchParams(params).toString();
-  const url = `${API_BASE}${path}${qs ? `?${qs}` : ''}`;
-  const res = await fetch(url, { headers: { 'Accept':'application/json', ...authHeaders() }});
-  if(!res.ok) throw new Error(`GET ${path} ${res.status}`);
+  const url = new URL(API_BASE + path);
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined && v !== null && v !== '') {
+      url.searchParams.append(k, v);
+    }
+  });
+  const res = await fetch(url, { headers: authHeaders() });
+  if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
+
 async function apiPatch(path, body) {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await fetch(API_BASE + path, {
     method: 'PATCH',
-    headers: { 'Content-Type':'application/json', ...authHeaders() },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(body)
   });
-  if(!res.ok) throw new Error(`PATCH ${path} ${res.status}`);
-  return res.json().catch(()=> ({}));
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
 }
 
-// ====== UI refs ======
-const qEl = document.getElementById('q');
-const statusEl = document.getElementById('status');
-const startEl = document.getElementById('start');
-const endEl = document.getElementById('end');
-const btnFiltrar = document.getElementById('btnFiltrar');
-const btnLimparFiltros = document.getElementById('btnLimparFiltros');
-const tbody = document.getElementById('tbody');
-const pageInfo = document.getElementById('pageInfo');
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
-
-// Detalhe modal
-const detailModal = document.getElementById('detailModal');
-const closeDetail = document.getElementById('closeDetail');
-const detailBody = document.getElementById('detailBody');
-const btnExportJSON = document.getElementById('btnExportJSON');
-const btnMarkAnalyzed = document.getElementById('btnMarkAnalyzed');
-
-closeDetail.addEventListener('click', () => detailModal.close());
-
-// ====== Eventos filtros/paginação ======
-btnFiltrar.addEventListener('click', () => {
-  state.q = qEl.value.trim();
-  state.status = statusEl.value;
-  state.start = startEl.value;
-  state.end = endEl.value;
-  state.page = 0;
-  loadTable();
-});
-btnLimparFiltros.addEventListener('click', () => {
-  qEl.value = ''; statusEl.value = ''; startEl.value = ''; endEl.value = '';
-  state.q = state.status = state.start = state.end = '';
-  state.page = 0;
-  loadTable();
-});
-prevBtn.addEventListener('click', () => {
-  if(state.page > 0){ state.page--; loadTable(); }
-});
-nextBtn.addEventListener('click', () => {
-  if(state.page + 1 < state.totalPages){ state.page++; loadTable(); }
-});
-
-// ====== Carregar Tabela ======
-async function loadTable(){
-  tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Carregando…</td></tr>`;
-  try{
-    const params = {
-      search: state.q,
-      status: state.status,
-      page: state.page,
-      size: PAGE_SIZE,
-      startDate: state.start || undefined,
-      endDate: state.end || undefined
-    };
-    const data = await apiGet('/diagnosticos', params);
-
-    // Tentar adaptar formatos comuns de paginação:
-    // Spring Page: { content, totalPages, number }
-    // Lista simples: []
-    const items = Array.isArray(data) ? data
-      : Array.isArray(data.content) ? data.content
-      : Array.isArray(data.items) ? data.items
-      : (data.results || []);
-
-    state.totalPages = Number.isInteger(data.totalPages) ? data.totalPages
-                   : ((data.total_pages ?? Math.ceil((data.total ?? items.length)/PAGE_SIZE)) || 1);
-
-    if(!items || items.length === 0){
-      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Nenhum registro encontrado.</td></tr>`;
-    }else{
-      tbody.innerHTML = items.map(rowHtml).join('');
-      // bind botões Ver
-      document.querySelectorAll('[data-view]').forEach(btn=>{
-        btn.addEventListener('click', () => openDetail(btn.getAttribute('data-view')));
-      });
-    }
-    pageInfo.textContent = `Página ${state.page+1} de ${state.totalPages}`;
-  }catch(e){
-    console.error(e);
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#ef4444">Erro ao carregar dados.</td></tr>`;
-    showToast('Falha ao carregar diagnósticos.');
-  }
+function authHeaders() {
+  const token = localStorage.getItem('ov-token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-function rowHtml(item){
-  // Mapeamento defensivo de campos
-  const id = item.id ?? item.codigo ?? '—';
-  const paciente = item.paciente?.nome ?? item.nomePaciente ?? '—';
-  const cpf = item.paciente?.cpf ?? item.cpf ?? '—';
-  const procedimento = item.procedimento ?? item.nomeProcedimento ?? '—';
-  const data = fmtDate(item.data ?? item.createdAt ?? item.criadoEm);
-  const status = item.status ?? 'novo';
-  const dentista = item.dentista?.nome ?? item.usuario ?? '—';
-
+// ============================
+// Renderização da Tabela
+// ============================
+function rowHtml(item) {
   return `
     <tr>
-      <td>${id}</td>
-      <td>${escapeHtml(paciente)}</td>
-      <td>${escapeHtml(cpf)}</td>
-      <td>${escapeHtml(procedimento)}</td>
-      <td>${data}</td>
-      <td><span class="badge ${badgeClass(status)}">${escapeHtml(labelStatus(status))}</span></td>
-      <td>${escapeHtml(dentista)}</td>
-      <td style="text-align:right;">
-        <button class="btn ghost" data-view="${id}">Ver</button>
+      <td>${item.id}</td>
+      <td>${item.paciente?.nome ?? '—'}</td>
+      <td>${item.paciente?.cpf ?? '—'}</td>
+      <td>${item.procedimento ?? '—'}</td>
+      <td>${item.dentista?.nome ?? '—'}</td>
+      <td>${item.status ?? '—'}</td>
+      <td>${new Date(item.createdAt).toLocaleString('pt-BR')}</td>
+      <td>
+        <button class="btn ghost" onclick="verDetalhe(${item.id})">Ver</button>
       </td>
-    </tr>`;
-}
-
-// ====== Detalhe ======
-let currentDetailId = null;
-
-async function openDetail(id){
-  currentDetailId = id;
-  detailBody.innerHTML = 'Carregando…';
-  detailModal.showModal();
-  try{
-    const data = await apiGet(`/diagnosticos/${id}`);
-    detailBody.innerHTML = renderDetail(data);
-  }catch(e){
-    detailBody.innerHTML = `<p style="color:#ef4444">Erro ao carregar detalhe.</p>`;
-  }
-}
-
-btnExportJSON.addEventListener('click', () => {
-  if(!currentDetailId) return;
-  apiGet(`/diagnosticos/${currentDetailId}`).then(data=>{
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `diagnostico_${currentDetailId}.json`;
-    a.click();
-  });
-});
-
-btnMarkAnalyzed.addEventListener('click', async () => {
-  if(!currentDetailId) return;
-  try{
-    await apiPatch(`/diagnosticos/${currentDetailId}/status`, { status: 'em_analise' });
-    showToast('Marcado como "Em análise".');
-    detailModal.close();
-    loadTable();
-  }catch(e){
-    showToast('Falha ao atualizar status.');
-  }
-});
-
-// ====== Utils ======
-function fmtDate(iso){
-  if(!iso) return '—';
-  const d = new Date(iso);
-  if(isNaN(d)) return '—';
-  return d.toLocaleString('pt-BR', { hour12:false });
-}
-function badgeClass(status){
-  switch((status||'').toLowerCase()){
-    case 'aprovado': return 'badge-success';
-    case 'reprovado': return 'badge-danger';
-    case 'em_analise': return 'badge-warning';
-    default: return 'badge-neutral';
-  }
-}
-function labelStatus(s){
-  const v = (s||'').toLowerCase();
-  return v === 'em_analise' ? 'Em análise'
-       : v === 'aprovado' ? 'Aprovado'
-       : v === 'reprovado' ? 'Reprovado'
-       : 'Novo';
-}
-function escapeHtml(str){ return (str??'').toString().replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m])); }
-function renderDetail(d){
-  const paciente = d.paciente?.nome ?? d.nomePaciente ?? '—';
-  const cpf = d.paciente?.cpf ?? d.cpf ?? '—';
-  const procedimento = d.procedimento ?? d.nomeProcedimento ?? '—';
-  const executado = d.executado ?? d.descricao ?? '—';
-  const prescricao = d.prescricao ?? '—';
-  const status = labelStatus(d.status);
-  const created = fmtDate(d.data ?? d.createdAt);
-  const dentista = d.dentista?.nome ?? d.usuario ?? '—';
-
-  return `
-    <p><strong>Paciente:</strong> ${escapeHtml(paciente)}</p>
-    <p><strong>CPF:</strong> ${escapeHtml(cpf)}</p>
-    <p><strong>Procedimento:</strong> ${escapeHtml(procedimento)}</p>
-    <p><strong>Status:</strong> ${escapeHtml(status)}</p>
-    <p><strong>Dentista:</strong> ${escapeHtml(dentista)}</p>
-    <p><strong>Data:</strong> ${escapeHtml(created)}</p>
-    <hr>
-    <p><strong>Executado:</strong><br>${escapeHtml(executado).replace(/\n/g,'<br>')}</p>
-    <p><strong>Prescrição:</strong><br>${escapeHtml(prescricao).replace(/\n/g,'<br>')}</p>
+    </tr>
   `;
 }
 
+async function carregarTabela(page = 0) {
+  const search = document.getElementById('search')?.value || '';
+  const status = document.getElementById('status')?.value || '';
+  const startDate = document.getElementById('startDate')?.value || '';
+  const endDate = document.getElementById('endDate')?.value || '';
+
+  try {
+    const data = await apiGet('/diagnosticos', {
+      search,
+      status,
+      page,
+      size: 10,
+      startDate,
+      endDate
+    });
+    const items = data.content || [];
+    const tbody = document.querySelector('#tabela tbody');
+    tbody.innerHTML = items.map(rowHtml).join('');
+
+    renderPaginacao(data.totalPages, data.number);
+  } catch (e) {
+    console.error(e);
+    showToast('Erro ao carregar diagnósticos.');
+  }
+}
+
+function renderPaginacao(totalPages, currentPage) {
+  const el = document.getElementById('paginacao');
+  if (!el) return;
+
+  // helper de botão
+  const makeBtn = (label, page, disabled = false, extraClass = 'ghost') =>
+    `<button class="btn ${extraClass}" ${disabled ? 'disabled' : ''} data-page="${page}">${label}</button>`;
+
+  let html = '';
+
+  // setas (primeira / anterior)
+  html += makeBtn('«', 0, currentPage === 0);
+  html += makeBtn('‹', Math.max(0, currentPage - 1), currentPage === 0);
+
+  // janela ao redor da página atual
+  const windowSize = 2; // mostra atual ±2
+  const start = Math.max(0, currentPage - windowSize);
+  const end = Math.min(totalPages - 1, currentPage + windowSize);
+
+  const pageBtn = (i) =>
+    makeBtn(String(i + 1), i, i === currentPage, i === currentPage ? 'primary' : 'ghost');
+
+  // primeira + reticências
+  if (start > 0) {
+    html += pageBtn(0);
+    if (start > 1) html += `<span class="ellipsis">…</span>`;
+  }
+
+  // janela do meio
+  for (let i = start; i <= end; i++) html += pageBtn(i);
+
+  // última + reticências
+  if (end < totalPages - 1) {
+    if (end < totalPages - 2) html += `<span class="ellipsis">…</span>`;
+    html += pageBtn(totalPages - 1);
+  }
+
+  // setas (próxima / última)
+  html += makeBtn('›', Math.min(totalPages - 1, currentPage + 1), currentPage === totalPages - 1);
+  html += makeBtn('»', totalPages - 1, currentPage === totalPages - 1);
+
+  el.innerHTML = html;
+
+  // navegação
+  el.querySelectorAll('button[data-page]').forEach((btn) => {
+    if (btn.disabled) return;
+    btn.addEventListener('click', () => {
+      const p = parseInt(btn.getAttribute('data-page'), 10);
+      carregarTabela(p);
+      el.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
+    });
+  });
+}
+
+// ============================
+// Detalhes + Atualização de status
+// ============================
+async function verDetalhe(id) {
+  try {
+    const d = await apiGet(`/diagnosticos/${id}`);
+    const modal = document.getElementById('detalheModal');
+    modal.querySelector('.modal-body').innerHTML = renderDetail(d);
+    modal.showModal();
+
+    // Botões de status
+    modal.querySelector('#btnEmAnalise').onclick = () => alterarStatus(id, 'em_analise');
+    modal.querySelector('#btnAprovar').onclick = () => alterarStatus(id, 'aprovado');
+    modal.querySelector('#btnReprovar').onclick = () => alterarStatus(id, 'reprovado');
+  } catch (e) {
+    console.error(e);
+    showToast('Erro ao carregar detalhe.');
+  }
+}
+
+function renderDetail(d) {
+  return `
+    <h3>Paciente</h3>
+    <p><b>Nome:</b> ${d.paciente?.nome ?? '—'}<br>
+       <b>CPF:</b> ${d.paciente?.cpf ?? '—'}</p>
+
+    <h3>Consulta</h3>
+    <p><b>Procedimento:</b> ${d.procedimento}<br>
+       <b>Executado:</b> ${d.executado}<br>
+       <b>Prescrição:</b> ${d.prescricao || '—'}</p>
+
+    <h3>Dentista</h3>
+    <p>${d.dentista?.nome ?? '—'}</p>
+
+    <h3>Status Atual:</h3>
+    <p>${d.status}</p>
+
+    <div class="actions">
+      <button id="btnEmAnalise" class="btn ghost">Marcar em análise</button>
+      <button id="btnAprovar" class="btn primary">Aprovar</button>
+      <button id="btnReprovar" class="btn danger">Reprovar</button>
+    </div>
+  `;
+}
+
+async function alterarStatus(id, status) {
+  try {
+    await apiPatch(`/diagnosticos/${id}/status`, { status });
+    showToast(`Status alterado para ${status}`);
+    document.getElementById('detalheModal').close();
+    carregarTabela();
+  } catch (e) {
+    console.error(e);
+    showToast('Erro ao atualizar status.');
+  }
+}
+
+// ============================
+// Toast
+// ============================
+const toast = document.getElementById('toast');
+function showToast(msg, ms = 2400) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), ms);
+}
+
+// ============================
 // Inicialização
-loadTable();
+// ============================
+document.addEventListener('DOMContentLoaded', () => {
+  carregarTabela();
+  document.getElementById('searchBtn')?.addEventListener('click', () => carregarTabela());
+});

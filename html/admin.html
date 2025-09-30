@@ -48,8 +48,8 @@
         <!-- Filtros -->
         <div class="grid" id="filters">
           <div class="field">
-            <label for="q">Busca (nome/CPF/procedimento)</label>
-            <input type="text" id="q" placeholder="Digite para filtrar..." />
+            <label for="search">Busca (nome/CPF/procedimento)</label>
+            <input type="text" id="search" placeholder="Digite para filtrar..." />
           </div>
           <div class="field">
             <label for="status">Status</label>
@@ -62,67 +62,64 @@
             </select>
           </div>
           <div class="field">
-            <label for="start">Data inicial</label>
-            <input type="date" id="start">
+            <label for="startDate">Data inicial</label>
+            <input type="date" id="startDate">
           </div>
           <div class="field">
-            <label for="end">Data final</label>
-            <input type="date" id="end">
-          </div>
-          <div class="field">
-            <label>&nbsp;</label>
-            <button id="btnFiltrar" class="btn secondary">Aplicar filtros</button>
+            <label for="endDate">Data final</label>
+            <input type="date" id="endDate">
           </div>
           <div class="field">
             <label>&nbsp;</label>
-            <button id="btnLimparFiltros" class="btn ghost">Limpar</button>
+            <button id="searchBtn" class="btn secondary">Aplicar filtros</button>
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button id="btnLimparFiltros" class="btn ghost" onclick="
+              document.getElementById('search').value='';
+              document.getElementById('status').value='';
+              document.getElementById('startDate').value='';
+              document.getElementById('endDate').value='';
+            ">Limpar</button>
           </div>
         </div>
 
         <!-- Tabela -->
         <div class="table-wrap" style="overflow:auto;margin-top:16px;">
-          <table class="ov-table" id="tbl">
+          <table class="ov-table" id="tabela">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Paciente</th>
                 <th>CPF</th>
                 <th>Procedimento</th>
-                <th>Data</th>
-                <th>Status</th>
                 <th>Dentista</th>
+                <th>Status</th>
+                <th>Data</th>
                 <th style="text-align:right;">Ações</th>
               </tr>
             </thead>
-            <tbody id="tbody">
+            <tbody>
               <tr><td colspan="8" style="text-align:center;">Carregando…</td></tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Paginação -->
-        <div class="actions" style="justify-content:flex-end;">
-          <button class="btn ghost" id="prev">Anterior</button>
-          <span id="pageInfo" class="hint"></span>
-          <button class="btn ghost" id="next">Próxima</button>
-        </div>
+        <!-- Paginação (renderizada via JS) -->
+        <div id="paginacao" class="actions" style="justify-content:center; gap:8px;"></div>
       </div>
     </section>
   </main>
 
   <!-- Modal Detalhe -->
-  <dialog id="detailModal" class="modal">
+  <dialog id="detalheModal" class="modal">
     <div class="modal-card">
       <div class="modal-header">
         <h2>Detalhes do diagnóstico</h2>
-        <button class="btn icon" id="closeDetail">✕</button>
+        <button class="btn icon" onclick="this.closest('dialog').close()">✕</button>
       </div>
       <div class="modal-content">
-        <div id="detailBody">Carregando…</div>
-      </div>
-      <div class="modal-actions">
-        <button class="btn" id="btnExportJSON">Exportar JSON</button>
-        <button class="btn primary" id="btnMarkAnalyzed">Marcar como “Em análise”</button>
+        <div class="modal-body">Carregando…</div>
       </div>
     </div>
   </dialog>
