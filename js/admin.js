@@ -66,32 +66,48 @@ function monthIndex(iso) {
 
 const MONTHS_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
-// --- helper central para montar o motivo ---
+// ===== Helpers de status/motivo =====
+const norm = s => (s ?? '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const isAtencao = s => norm(s) === 'atencao';
+
+// também trate cenários onde o back manda uma flag (fraude: 1)
+function isAttentionLike(obj){
+  return isAtencao(obj?.status) || obj?.fraude === 1 || obj?.fraude === '1' || norm(obj?.status) === 'suspeito';
+}
+
+function badgeHtml(status) {
+  const s = norm(status);
+  if (s === 'aprovado') return `<span class="badge badge-success" title="Aprovado">Aprovado</span>`;
+  if (s === 'reprovado') return `<span class="badge badge-danger" title="Reprovado">Reprovado</span>`;
+  if (s === 'em_analise') return `<span class="badge badge-warning" title="Em análise">Em análise</span>`;
+  if (s === 'atencao') return `<span class="badge badge-warning" title="Caso em atenção">Atenção</span>`;
+  if (s === 'novo') return `<span class="badge badge-neutral" title="Novo">Novo</span>`;
+  // fallback
+  const label = (status ?? '—').toString().replace('_', ' ');
+  return `<span class="badge badge-neutral">${label}</span>`;
+}
+
 function getMotivo(obj) {
-  const s = (obj.status || (obj.suspicious ? 'atencao' : 'normal')).toLowerCase();
-  if (s !== 'atencao') return '—';
-  return obj.motivos || obj.motivo_atencao || obj.attentionReason || '—';
+  // onde o motivo pode vir
+  const motivo = obj?.motivo_atencao || obj?.motivos || obj?.attentionReason || obj?.motivo || '';
+  return isAttentionLike(obj) && motivo ? motivo : '—';
 }
 
 // ============================
 // Renderização da Tabela
 // ============================
 function rowHtml(item) {
-  const s = (item.status || (item.suspicious ? 'atencao' : 'normal')).toLowerCase();
-  const chip = `<span class="${badgeClassFor(item.status, item.suspicious)}">${s.replace('_', ' ')}</span>`;
-  const motivo = getMotivo(item);
-
   return `
     <tr>
       <td>${item.id}</td>
-      <td>${item.paciente?.nome ?? '—'}</td>
-      <td>${item.paciente?.cpf ?? '—'}</td>
+      <td>${item.paciente?.nome ?? item.paciente_nome ?? '—'}</td>
+      <td>${item.paciente?.cpf ?? item.cpf ?? '—'}</td>
       <td>${item.procedimento ?? '—'}</td>
-      <td>${item.dentista?.nome ?? '—'}</td>
-      <td style="text-align:center;">${chip}</td>
-      <td>${motivo}</td>
-      <td>${formatDate(item.createdAt)}</td>
-      <td style="text-align:right;">
+      <td>${item.dentista?.nome ?? item.dentista ?? '—'}</td>
+      <td>${badgeHtml(item.status)}</td>
+      <td>${getMotivo(item)}</td>
+      <td>${new Date(item.createdAt ?? item.created_at).toLocaleString('pt-BR')}</td>
+      <td>
         <button class="btn ghost" onclick="verDetalhe(${item.id})">Ver</button>
       </td>
     </tr>
@@ -302,31 +318,29 @@ async function verDetalhe(id) {
 
 // 2) renderDetail
 function renderDetail(d) {
-  const chip = `<span class="${badgeClassFor(d.status, d.suspicious)}">${(d.status || '').replace('_',' ')}</span>`;
   const motivo = getMotivo(d);
-  const sexoStr = (d.paciente?.sexo || '') ? ` (${d.paciente.sexo})` : '';
-
   return `
     <h3>Paciente</h3>
-    <p><b>Nome:</b> ${d.paciente?.nome ?? '—'}${sexoStr}<br>
-       <b>CPF:</b> ${d.paciente?.cpf ?? '—'}</p>
+    <p><b>Nome:</b> ${d.paciente?.nome ?? d.paciente_nome ?? '—'}<br>
+       <b>CPF:</b> ${d.paciente?.cpf ?? d.cpf ?? '—'}</p>
 
     <h3>Consulta</h3>
-    <p><b>Procedimento:</b> ${d.procedimento || '—'}<br>
-       <b>Executado:</b> ${d.executado || '—'}<br>
+    <p><b>Procedimento:</b> ${d.procedimento ?? '—'}<br>
+       <b>Executado:</b> ${d.executado ?? '—'}<br>
        <b>Prescrição:</b> ${d.prescricao || '—'}</p>
 
     <h3>Dentista</h3>
-    <p>${d.dentista?.nome ?? '—'}</p>
+    <p>${d.dentista?.nome ?? d.dentista ?? '—'}</p>
 
     <h3>Status Atual:</h3>
-    <p>${chip}</p>
-    <p><b>Motivo (atenção):</b> ${motivo}</p>
+    <p>${badgeHtml(d.status)}</p>
+
+    ${isAttentionLike(d) ? `<h3>Motivo (atenção):</h3><p>${motivo}</p>` : ``}
 
     <div class="actions">
       <button id="btnEmAnalise" class="btn ghost">Marcar em análise</button>
       <button id="btnAprovar" class="btn primary">Aprovar</button>
-      <button id="btnReprovar" class="btn ghost">Reprovar</button>
+      <button id="btnReprovar" class="btn danger">Reprovar</button>
     </div>
   `;
 }
