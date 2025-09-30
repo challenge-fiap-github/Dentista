@@ -137,3 +137,44 @@ body{
   --muted:#9AA3B2;
   --ring: rgba(16,185,129,0.22);
 }
+
+/* Tabela (dashboard admin) */
+.ov-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:14px;
+  background:var(--card);
+  border:1px solid rgba(0,0,0,0.06);
+  border-radius:14px;
+  overflow:hidden;
+}
+.ov-table thead th{
+  text-align:left;
+  background:rgba(0,0,0,0.03);
+  padding:12px 14px;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+  white-space:nowrap;
+}
+.ov-table tbody td{
+  padding:12px 14px;
+  border-bottom:1px solid rgba(0,0,0,0.04);
+}
+.ov-table tbody tr:last-child td{ border-bottom:none; }
+
+/* Badges */
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+}
+.badge-success{ background:rgba(16,185,129,.15); color:#047857; }
+.badge-danger{  background:rgba(239,68,68,.15);  color:#b91c1c; }
+.badge-warning{ background:rgba(245,158,11,.18); color:#92400e; }
+.badge-neutral{ background:rgba(30,144,255,.15); color:#1e40af; }
+
+/* Dark tweaks */
+:root.dark .ov-table thead th{ background:rgba(255,255,255,0.04); }
+:root.dark .ov-table tbody td{ border-bottom:1px solid rgba(255,255,255,0.06); }

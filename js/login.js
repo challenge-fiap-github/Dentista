@@ -20,7 +20,7 @@ function showToast(msg, ms=2400){
   setTimeout(()=>toast.classList.remove('show'), ms);
 }
 
-// Login
+// Login (ÚNICO submit listener)
 const form = document.getElementById('loginForm');
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -31,12 +31,22 @@ form.addEventListener('submit', (e) => {
     showToast('Preencha usuário e senha.');
     return;
   }
-  if(usuario !== 'dentista' || senha !== 'dentista123'){
-    showToast('Usuário ou senha incorretos.');
+
+  // dentista
+  if(usuario === 'dentista' && senha === 'dentista123'){
+    localStorage.setItem('ov-auth', 'dentista');
+    localStorage.setItem('ov-auth-role', 'dentista');
+    window.location.href = 'index.html'; // html/index.html
     return;
   }
 
-  // Marca login simples e segue para index
-  localStorage.setItem('ov-auth', 'dentista'); // valor simbólico
-  window.location.href = 'index.html';
+  // admin
+  if(usuario === 'admin' && senha === 'admin123'){
+    localStorage.setItem('ov-auth', 'admin');
+    localStorage.setItem('ov-auth-role', 'admin');
+    window.location.href = 'admin.html'; // html/admin.html
+    return;
+  }
+
+  showToast('Usuário ou senha incorretos.');
 });
