@@ -85,50 +85,59 @@
         </div>
 
         <!-- Tabela -->
-        <div class="table-wrap" style="overflow:auto;margin-top:16px;">
-          <table class="ov-table" id="tabela">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Paciente</th>
-                <th>CPF</th>
-                <th>Procedimento</th>
-                <th>Dentista</th>
-                <th>Status</th>
-                <th>Data</th>
-                <th style="text-align:right;">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td colspan="8" style="text-align:center;">Carregando…</td></tr>
-            </tbody>
-          </table>
-        </div>
+<div class="table-wrap" style="overflow:auto;margin-top:16px;">
+  <table class="ov-table" id="tabela">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Paciente</th>
+        <th>CPF</th>
+        <th>Procedimento</th>
+        <th>Dentista</th>
+        <th>Status</th>
+        <th>Motivo</th>
+        <th>Data</th>
+        <th style="text-align:right;">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="9" style="text-align:center;">Carregando…</td></tr>
+    </tbody>
+  </table>
+</div>
 
-        <!-- Paginação (renderizada via JS) -->
-        <div id="paginacao" class="actions" style="justify-content:center; gap:8px;"></div>
-      </div>
-    </section>
+<!-- Paginação (renderizada via JS) -->
+<div id="paginacao" class="actions" style="justify-content:center; gap:8px;"></div>
+</div>
+</section>
 
-    <!-- === NOVO: Card de Gráfico / Possíveis Fraudes === -->
-    <section class="ov-container" style="margin-top:16px;">
-      <div class="card">
-        <div class="card-header">
-          <h2>Resumo de possíveis fraudes</h2>
-          <p class="subtitle">Comparativo de Normal × Atenção para o período carregado</p>
-        </div>
-        <div class="actions" style="justify-content:flex-end; gap:10px;">
-          <label class="hint" for="fraudeFilter">Filtro:</label>
-          <select id="fraudeFilter" class="btn ghost" style="padding:8px 10px;">
-            <option value="all">Todos</option>
-            <option value="suspicious">Apenas possíveis fraudes</option>
-            <option value="normal">Apenas normais</option>
-          </select>
-        </div>
-        <canvas id="chartFraudes" height="120"></canvas>
-      </div>
-    </section>
-    <!-- === FIM DO NOVO BLOCO === -->
+<!-- ====== RESUMO / GRÁFICO ====== -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-header" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1 1 auto">
+      <h1 style="margin:0">Resumo de possíveis fraudes</h1>
+      <p class="subtitle" style="margin-top:6px">Comparativo de Normal × Atenção por mês</p>
+    </div>
+
+    <div class="field" style="min-width:180px">
+      <label for="chartYear">Ano</label>
+      <select id="chartYear"></select>
+    </div>
+
+    <div class="field" style="min-width:220px">
+      <label for="chartFilter">Filtro</label>
+      <select id="chartFilter">
+        <option value="todos" selected>Todos (Normal + Atenção)</option>
+        <option value="normal">Apenas normais</option>
+        <option value="atencao">Apenas atenção</option>
+      </select>
+    </div>
+  </div>
+
+  <div style="padding:8px 12px 16px">
+    <canvas id="fraudChart" height="90"></canvas>
+  </div>
+</div>
   </main>
 
   <!-- Modal Detalhe -->
@@ -154,7 +163,7 @@
   </footer>
 
   <!-- Chart.js para o card do gráfico -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
   <script src="../js/admin.js"></script>
 </body>
 </html>

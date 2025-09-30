@@ -210,3 +210,11 @@ body{
 .ov-table tbody td:nth-child(6) {
   text-align: center;
 }
+/* coluna Motivo centralizada levemente */
+.ov-table thead th:nth-child(7),
+.ov-table tbody td:nth-child(7) { 
+  color: var(--muted); 
+}
+
+/* pequenos pontos nos datasets do gráfico */
+canvas#chartFraudes { max-height: 420px; }

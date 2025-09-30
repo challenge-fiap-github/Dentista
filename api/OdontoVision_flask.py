@@ -7,6 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 import joblib
 from datetime import datetime, timedelta   # << adiciona timedelta
 from typing import List, Dict, Any
+import re
 
 app = Flask(__name__)
 # Libera CORS para rotas /api/*
@@ -50,19 +51,9 @@ if "status" not in raw_df.columns:
 # ======================
 # Regra: limpeza -> canal em 15 dias  => suspeito
 # ======================
-def marcar_suspeitas_limpeza_para_canal(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-    if "created_at" not in df.columns:
-        return df
-
-    # garante datetime
-    df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
-
-    # coluna booleana
-    if "suspicious" not in df.columns:
-        df["suspicious"] = False
-    else:
-        df["suspicious"] = df["suspicious"].fillna(False)
+    # coluna de motivo
+    if "attention_reason" not in df.columns:
+        df["attention_reason"] = ""
 
     # para cada CPF, ordena por data e busca padrão limpeza -> canal em 15 dias
     for cpf, g in df.groupby("cpf"):
@@ -75,23 +66,13 @@ def marcar_suspeitas_limpeza_para_canal(df: pd.DataFrame) -> pd.DataFrame:
             if "profilaxia" in p1 and ("canal" in p2 or "tratamento de canal" in p2):
                 if pd.notna(d1) and pd.notna(d2) and (d2 - d1) <= timedelta(days=15):
                     df.loc[g.index[i + 1], "suspicious"] = True
-                    # se vier vazio/normal, sobe para atenção
+                    df.loc[g.index[i + 1], "attention_reason"] = (
+                        f"Profilaxia em {d1.date()} → Tratamento de canal em {d2.date()} (≤ 15 dias)"
+                    )
                     if "status" in df.columns:
                         st = str(df.loc[g.index[i + 1], "status"]).strip().lower()
                         if st == "" or st == "normal":
                             df.loc[g.index[i + 1], "status"] = "atencao"
-
-    # caso não exista coluna status, cria a partir de suspicious
-    if "status" not in df.columns:
-        df["status"] = df["suspicious"].map(lambda x: "atencao" if x else "normal")
-    else:
-        df["status"] = df["status"].fillna("").replace("", "normal")
-        df.loc[df["suspicious"] & (df["status"].str.strip().str.lower() == "normal"), "status"] = "atencao"
-
-    return df
-
-# aplica a regra nos dados carregados
-raw_df = marcar_suspeitas_limpeza_para_canal(raw_df)
 
 # ======================
 # Treinar modelo fraude (se houver coluna numérica 'fraude')
@@ -128,14 +109,17 @@ def normalize_row(row: pd.Series) -> Dict[str, Any]:
         "id": int(row.get("id")),
         "paciente": {
             "nome": str(row.get("paciente_nome", "—")),
-            "cpf": str(row.get("cpf", "—"))
+            "cpf": str(row.get("cpf", "—")),
+            # se existir coluna 'sexo' no CSV, exporta
+            "sexo": str(row.get("sexo", "")).upper()  # "M" | "F" | ""
         },
         "dentista": {"nome": str(row.get("dentista", "—"))},
         "procedimento": str(row.get("procedimento", "—")),
         "executado": str(row.get("executado", "")),
         "prescricao": str(row.get("prescricao", "")),
         "status": str(row.get("status", "normal")).lower(),
-        "suspicious": bool(row.get("suspicious", False)),   # << expõe flag
+        "suspicious": bool(row.get("suspicious", False)),
+        "attentionReason": str(row.get("attention_reason", "")),
         "createdAt": to_iso(row.get("created_at"))
     }
 
@@ -219,6 +203,146 @@ def prever_fraude():
 @app.get("/api/ping")
 def ping():
     return jsonify(ok=True, msg="pong")
+
+# ======================
+# Regras de Negócio
+# ======================
+TOOTH_RE = re.compile(r'dente\s*(\d{1,2})', flags=re.IGNORECASE)
+
+ANTIBIOTICOS = ['amoxicilina', 'clavulanato', 'azitro', 'azitromicina',
+                'cefalexina', 'doxiciclina', 'metronidazol']
+ANALGESICOS  = ['dipirona', 'paracetamol']
+ANTIINFLAM   = ['ibuprofeno', 'diclofenaco', 'naproxeno', 'corticostero', 'prednis']
+
+MEDS_KEYWORDS = ANTIBIOTICOS + ANALGESICOS + ANTIINFLAM
+
+def _kw(s):  # string segura
+    return str(s or '').strip().lower()
+
+def _to_dt(s):
+    return pd.to_datetime(s, errors='coerce')
+
+def _tooth(text):
+    m = TOOTH_RE.search(_kw(text))
+    return m.group(1) if m else None
+
+def marcar_suspeitas_multiplas_regras(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+    if "created_at" not in df.columns:
+        return df
+
+    # normalizações
+    df["created_at"] = _to_dt(df["created_at"])
+    for col in ["procedimento", "executado", "prescricao", "dentista", "paciente_nome"]:
+        if col not in df.columns:
+            df[col] = ""
+        df[col] = df[col].fillna("")
+
+    # colunas alvo
+    if "suspicious" not in df.columns:
+        df["suspicious"] = False
+    else:
+        df["suspicious"] = df["suspicious"].fillna(False)
+
+    if "attention_reason" not in df.columns:
+        df["attention_reason"] = ""
+    else:
+        df["attention_reason"] = df["attention_reason"].fillna("")
+
+    # processa por paciente (cpf)
+    for cpf, g in df.groupby("cpf"):
+        g = g.sort_values("created_at")
+        idxs = list(g.index)
+
+        for i in range(len(g)):
+            reasons = []
+
+            # dados atuais
+            pi = _kw(g.iloc[i]["procedimento"])
+            ei = _kw(g.iloc[i]["executado"])
+            di = g.iloc[i]["created_at"]
+            ti = _tooth(ei) or _tooth(pi)
+
+            # ---------- Regra 6: prescrição forte sem procedimento compatível ----------
+            presc = _kw(g.iloc[i]["prescricao"])
+            if any(k in presc for k in MEDS_KEYWORDS):
+                # compatível: canal, extração, raspagem pesada, cirurgia...
+                compat = any(k in pi for k in ["canal", "extraç", "raspagem", "cirurg"])
+                if not compat:
+                    reasons.append("Prescrição farmacológica sem procedimento clínico compatível")
+
+            # relacionais com registros vizinhos
+            if i < len(g) - 1:
+                pj = _kw(g.iloc[i+1]["procedimento"])
+                ej = _kw(g.iloc[i+1]["executado"])
+                dj = g.iloc[i+1]["created_at"]
+                tj = _tooth(ej) or _tooth(pj)
+
+                if pd.notna(di) and pd.notna(dj):
+                    delta = dj - di
+
+                    # ---------- Regra 1: profilaxia -> canal ≤15d ----------
+                    if "profilaxia" in pi and ("canal" in pj or "tratamento de canal" in pj):
+                        if delta <= timedelta(days=15):
+                            reasons.append(f"Profilaxia em {di.date()} → Canal em {dj.date()} (≤ 15 dias)")
+
+                    # ---------- Regra 2: restauração/resina -> canal mesmo dente ≤20d ----------
+                    if ("restaura" in pi or "resina" in pi) and ("canal" in pj):
+                        if delta <= timedelta(days=20) and (ti and tj and ti == tj):
+                            reasons.append(f"Restauração dente {ti} → Canal {tj} (≤ 20 dias)")
+
+                    # ---------- Regra 3: canal -> extração mesmo dente ≤30d ----------
+                    if "canal" in pi and ("extraç" in pj):
+                        if delta <= timedelta(days=30) and (ti and tj and ti == tj):
+                            reasons.append(f"Canal dente {ti} → Extração {tj} (≤ 30 dias)")
+
+                    # ---------- Regra 5: troca de dentista em ≤7d p/ procedimento semelhante ----------
+                    dent_i = _kw(g.iloc[i]["dentista"])
+                    dent_j = _kw(g.iloc[i+1]["dentista"])
+                    if dent_i and dent_j and dent_i != dent_j and delta <= timedelta(days=7):
+                        # semelhante se compartilha palavra-chave
+                        sem = any(k in pi and k in pj for k in ["canal", "restaura", "resina", "profilaxia", "extraç", "coroa", "prótese", "raspagem"])
+                        if sem:
+                            reasons.append(f"Troca de dentista em {delta.days} dia(s) para procedimento semelhante")
+
+                    # ---------- Regra 7: dois canais diferentes em ≤30d ----------
+                    if "canal" in pi and "canal" in pj and (ti != tj) and delta <= timedelta(days=30):
+                        reasons.append(f"Dois canais próximos (dentes {ti or '?'} e {tj or '?'}) em ≤ 30 dias")
+
+            # ---------- Regra 4: 3+ atendimentos em ≤14d ----------
+            # janela centrada no registro atual (avalia próximos)
+            cnt14 = 1
+            for k in range(i+1, len(g)):
+                if pd.notna(g.iloc[k]["created_at"]) and pd.notna(di):
+                    if (g.iloc[k]["created_at"] - di) <= timedelta(days=14):
+                        cnt14 += 1
+            if cnt14 >= 3:
+                reasons.append(f"{cnt14} atendimentos em ≤ 14 dias")
+
+            # aplica no dataframe
+            if reasons:
+                j = idxs[i]
+                df.loc[j, "suspicious"] = True
+                # agrega com o que já tinha
+                prev = _kw(df.loc[j, "attention_reason"])
+                all_reasons = " | ".join([r for r in [prev] + reasons if r])
+                df.loc[j, "attention_reason"] = all_reasons
+                # eleva status para atenção se estiver vazio/normal
+                st = _kw(df.loc[j, "status"]) if "status" in df.columns else ""
+                if st in ("", "normal", "novo"):
+                    df.loc[j, "status"] = "atencao"
+
+    # fallback de status
+    if "status" not in df.columns:
+        df["status"] = df["suspicious"].map(lambda x: "atencao" if x else "normal")
+    else:
+        df["status"] = df["status"].fillna("").replace("", "normal")
+        df.loc[df["suspicious"] & (df["status"].str.lower() == "normal"), "status"] = "atencao"
+
+    return df
+
+# aplica as regras
+raw_df = marcar_suspeitas_multiplas_regras(raw_df)
 
 if __name__ == "__main__":
     import os
