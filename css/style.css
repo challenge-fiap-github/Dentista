@@ -182,3 +182,31 @@ body{
 #paginacao.actions { justify-content: center; gap: 8px; flex-wrap: wrap; }
 #paginacao .btn { min-width: 40px; padding: 8px 12px; }
 #paginacao .ellipsis { padding: 0 6px; opacity: .6; user-select: none; }
+
+
+/* ===== Badges por status (OdontoVision) ===== */
+/* Use com: <span class="badge badge-normal">normal</span> etc. */
+.badge-normal  { background: rgba(16,185,129,.15); color: #047857; }   /* verde */
+.badge-atencao { background: rgba(245,158,11,.18); color: #92400e; }   /* laranja */
+.badge-em-analise { background: rgba(30,144,255,.15); color: #1e40af; }/* azul */
+.badge-aprovado   { background: rgba(16,185,129,.15); color: #047857; }/* verde */
+.badge-reprovado  { background: rgba(239,68,68,.15);  color: #b91c1c; }/* vermelho */
+
+/* Badge base já existe, reforçamos para ficar consistente na tabela */
+.ov-table td .badge {
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Dark mode ajustes finos (mantém contraste bom) */
+:root.dark .badge-normal     { background: rgba(16,185,129,.22);  color: #34d399; }
+:root.dark .badge-atencao    { background: rgba(245,158,11,.25);  color: #fbbf24; }
+:root.dark .badge-em-analise { background: rgba(30,144,255,.22);  color: #60a5fa; }
+:root.dark .badge-aprovado   { background: rgba(16,185,129,.22);  color: #34d399; }
+:root.dark .badge-reprovado  { background: rgba(239,68,68,.25);   color: #f87171; }
+
+/* (Opcional) centraliza a coluna de status, sem afetar o resto */
+.ov-table thead th:nth-child(6),
+.ov-table tbody td:nth-child(6) {
+  text-align: center;
+}

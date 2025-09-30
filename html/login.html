@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OdontoVision — Admin | Diagnósticos</title>
+  <title>OdontoVision — Login</title>
 
+  <!-- Fonte -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,113 +19,58 @@
         <div class="logo" aria-hidden="true">
           <svg width="32" height="32" viewBox="0 0 64 64" fill="none" role="img" aria-label="OdontoVision">
             <defs>
-              <linearGradient id="g-admin" x1="0" y1="0" x2="64" y2="64">
+              <linearGradient id="g-login" x1="0" y1="0" x2="64" y2="64">
                 <stop offset="0%" stop-color="#1E90FF"/>
                 <stop offset="100%" stop-color="#10B981"/>
               </linearGradient>
             </defs>
-            <circle cx="32" cy="32" r="30" stroke="url(#g-admin)" stroke-width="4" fill="none"/>
-            <path d="M18 36c0-8 6-14 14-14s14 6 14 14-6 14-14 14" stroke="url(#g-admin)" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <circle cx="32" cy="32" r="30" stroke="url(#g-login)" stroke-width="4" fill="none"/>
+            <path d="M18 36c0-8 6-14 14-14s14 6 14 14-6 14-14 14" stroke="url(#g-login)" stroke-width="4" stroke-linecap="round" fill="none"/>
           </svg>
         </div>
-        <span class="brand-name">OdontoVision — Admin</span>
+        <span class="brand-name">OdontoVision</span>
       </div>
-      <nav class="top-actions" style="gap:8px;display:flex;align-items:center;">
+      <nav class="top-actions">
         <button id="btnDarkMode" class="btn ghost" aria-label="Alternar tema">🌓</button>
-        <a href="index.html" class="btn ghost" aria-label="Tela do dentista">Dentista</a>
-        <button id="btnLogout" class="btn ghost" aria-label="Sair">Sair</button>
       </nav>
     </div>
   </header>
 
   <main class="ov-main">
     <section class="ov-container">
-      <div class="card">
+      <div class="card" style="max-width:560px;margin:0 auto;">
         <div class="card-header">
-          <h1>Diagnósticos</h1>
-          <p class="subtitle">Acompanhe os diagnósticos enviados pelos(as) dentistas.</p>
+          <h1>Login</h1>
+          <p class="subtitle">Acesse com seu usuário e senha para registrar consultas.</p>
         </div>
 
-        <!-- Filtros -->
-        <div class="grid" id="filters">
-          <div class="field">
-            <label for="search">Busca (nome/CPF/procedimento)</label>
-            <input type="text" id="search" placeholder="Digite para filtrar..." />
+        <form id="loginForm" novalidate>
+          <div class="grid">
+            <div class="field full">
+              <label for="usuario">Usuário <span class="req">*</span></label>
+              <input type="text" id="usuario" name="usuario" placeholder="Ex.: dentista" required maxlength="40" autocomplete="username" />
+              <small class="hint">Dentista: <strong>dentista</strong> &nbsp;|&nbsp; Admin: <strong>admin</strong></small>
+            </div>
           </div>
-          <div class="field">
-            <label for="status">Status</label>
-            <select id="status">
-              <option value="">Todos</option>
-              <option value="novo">Novo</option>
-              <option value="em_analise">Em análise</option>
-              <option value="aprovado">Aprovado</option>
-              <option value="reprovado">Reprovado</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="startDate">Data inicial</label>
-            <input type="date" id="startDate">
-          </div>
-          <div class="field">
-            <label for="endDate">Data final</label>
-            <input type="date" id="endDate">
-          </div>
-          <div class="field">
-            <label>&nbsp;</label>
-            <button id="searchBtn" class="btn secondary">Aplicar filtros</button>
-          </div>
-          <div class="field">
-            <label>&nbsp;</label>
-            <button id="btnLimparFiltros" class="btn ghost" onclick="
-              document.getElementById('search').value='';
-              document.getElementById('status').value='';
-              document.getElementById('startDate').value='';
-              document.getElementById('endDate').value='';
-            ">Limpar</button>
-          </div>
-        </div>
 
-        <!-- Tabela -->
-        <div class="table-wrap" style="overflow:auto;margin-top:16px;">
-          <table class="ov-table" id="tabela">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Paciente</th>
-                <th>CPF</th>
-                <th>Procedimento</th>
-                <th>Dentista</th>
-                <th>Status</th>
-                <th>Data</th>
-                <th style="text-align:right;">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td colspan="8" style="text-align:center;">Carregando…</td></tr>
-            </tbody>
-          </table>
-        </div>
+          <div class="grid">
+            <div class="field full">
+              <label for="senha">Senha <span class="req">*</span></label>
+              <input type="password" id="senha" name="senha" placeholder="••••••••" required maxlength="60" autocomplete="current-password" />
+              <small class="hint">Dentista: <strong>dentista123</strong> &nbsp;|&nbsp; Admin: <strong>admin123</strong></small>
+            </div>
+          </div>
 
-        <!-- Paginação (renderizada via JS) -->
-        <div id="paginacao" class="actions" style="justify-content:flex-end;"></div>
+          <div class="actions">
+            <div class="spacer"></div>
+            <button type="submit" class="btn primary">Entrar</button>
+          </div>
+        </form>
       </div>
     </section>
   </main>
 
-  <!-- Modal Detalhe -->
-  <dialog id="detalheModal" class="modal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2>Detalhes do diagnóstico</h2>
-        <button class="btn icon" onclick="this.closest('dialog').close()">✕</button>
-      </div>
-      <div class="modal-content">
-        <div class="modal-body">Carregando…</div>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- Toast -->
+  <!-- Toast para avisos rápidos -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <footer class="ov-footer">
@@ -133,34 +79,7 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script>
-    // ===== Guarda de rota (exige login) =====
-    (function guard(){
-      const logged = localStorage.getItem('ov-auth');
-      if(!logged){ window.location.href = 'login.html'; return; }
-    })();
-
-    // ===== Tema persistente + botão =====
-    (function initTheme(){
-      const saved = localStorage.getItem('ov-theme');
-      if (saved === 'dark') document.documentElement.classList.add('dark');
-    })();
-    document.getElementById('btnDarkMode').addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      localStorage.setItem('ov-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    });
-
-    // ===== Ano no rodapé =====
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // ===== Sair =====
-    document.getElementById('btnLogout').addEventListener('click', () => {
-      localStorage.removeItem('ov-auth');
-      localStorage.removeItem('ov-auth-role');
-      window.location.href = 'login.html';
-    });
-  </script>
-  <script src="../js/admin.js"></script>
+  <!-- CORRIGIDO: JS certo, na pasta js -->
+  <script src="../js/login.js"></script>
 </body>
 </html>

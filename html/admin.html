@@ -109,6 +109,26 @@
         <div id="paginacao" class="actions" style="justify-content:center; gap:8px;"></div>
       </div>
     </section>
+
+    <!-- === NOVO: Card de Gráfico / Possíveis Fraudes === -->
+    <section class="ov-container" style="margin-top:16px;">
+      <div class="card">
+        <div class="card-header">
+          <h2>Resumo de possíveis fraudes</h2>
+          <p class="subtitle">Comparativo de Normal × Atenção para o período carregado</p>
+        </div>
+        <div class="actions" style="justify-content:flex-end; gap:10px;">
+          <label class="hint" for="fraudeFilter">Filtro:</label>
+          <select id="fraudeFilter" class="btn ghost" style="padding:8px 10px;">
+            <option value="all">Todos</option>
+            <option value="suspicious">Apenas possíveis fraudes</option>
+            <option value="normal">Apenas normais</option>
+          </select>
+        </div>
+        <canvas id="chartFraudes" height="120"></canvas>
+      </div>
+    </section>
+    <!-- === FIM DO NOVO BLOCO === -->
   </main>
 
   <!-- Modal Detalhe -->
@@ -133,6 +153,8 @@
     </div>
   </footer>
 
+  <!-- Chart.js para o card do gráfico -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="../js/admin.js"></script>
 </body>
 </html>
