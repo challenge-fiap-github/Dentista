@@ -56,7 +56,7 @@ function isValidCPF(cpf) {
   return resto === parseInt(cpf.substring(10, 11));
 }
 
-// ====== Elementos do formulário ======
+// ====== elementos ======
 const form = document.getElementById('consultaForm');
 const paciente = document.getElementById('paciente');
 const cpfInput = document.getElementById('cpf');
@@ -64,6 +64,42 @@ const procedimento = document.getElementById('procedimento');
 const executado = document.getElementById('executado');
 const prescricao = document.getElementById('prescricao');
 const btnLimpar = document.getElementById('btnLimpar');
+
+// [MOTIVOS] refs
+const motivosWrap = document.getElementById('motivosWrap');
+const motivosPanel = motivosWrap?.querySelector('.multiselect-panel');
+const motivosChecks = motivosPanel?.querySelectorAll('input[type="checkbox"]');
+const motivosHidden = document.getElementById('motivosHidden');
+const motivosChips = document.getElementById('motivosChips');
+const motivosCount = document.getElementById('motivosCount');
+document.getElementById('btnMotivosLimpar')?.addEventListener('click', () => {
+  motivosChecks.forEach(c => c.checked = false);
+  updateMotivos();
+});
+document.getElementById('btnMotivosOk')?.addEventListener('click', () => {
+  motivosWrap.removeAttribute('open');
+});
+motivosChecks?.forEach(c => c.addEventListener('change', updateMotivos));
+
+function updateMotivos(){
+  const sel = Array.from(motivosChecks || []).filter(c => c.checked).map(c => c.value);
+  // hidden para required do HTML
+  motivosHidden.value = sel.join('; ');
+  // chips
+  motivosChips.innerHTML = sel.length
+    ? sel.map(v => `<span class="chip" data-v="${v}">${v}<button type="button" aria-label="Remover ${v}">×</button></span>`).join('')
+    : `<span class="hint">Nenhum motivo selecionado.</span>`;
+  motivosCount.textContent = `${sel.length} selecionado(s)`;
+  // remover chip
+  motivosChips.querySelectorAll('.chip button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.parentElement.getAttribute('data-v');
+      const el = Array.from(motivosChecks).find(c => c.value === v);
+      if (el){ el.checked = false; updateMotivos(); }
+    });
+  });
+}
+updateMotivos();
 
 // ====== Pop-up de sucesso ======
 const successModal = document.getElementById('successModal');
@@ -87,7 +123,7 @@ cpfInput.addEventListener('input', () => {
   cpfInput.setSelectionRange(pos, pos);
 });
 
-// Rascunho automático (localStorage)
+// ====== rascunho (inclui motivos) ======
 const DRAFT_KEY = 'ov-consulta-draft-v1';
 function saveDraft(){
   const data = {
@@ -96,6 +132,7 @@ function saveDraft(){
     procedimento: procedimento.value,
     executado: executado.value,
     prescricao: prescricao.value,
+    motivos: motivosHidden.value,   // [MOTIVOS]
     updatedAt: new Date().toISOString()
   };
   localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
@@ -110,10 +147,17 @@ function loadDraft(){
     procedimento.value = data.procedimento || '';
     executado.value = data.executado || '';
     prescricao.value = data.prescricao || '';
+    // [MOTIVOS] restaura
+    if (data.motivos){
+      const set = new Set(data.motivos.split(';').map(s => s.trim()).filter(Boolean));
+      motivosChecks.forEach(c => c.checked = set.has(c.value));
+      updateMotivos();
+    }
     [paciente, procedimento, executado, prescricao].forEach(bindCounter);
   }catch(e){}
 }
 [paciente, cpfInput, procedimento, executado, prescricao].forEach(el => el.addEventListener('input', saveDraft));
+motivosPanel?.addEventListener('change', saveDraft);
 loadDraft();
 
 // Submit com validações obrigatórias e CPF
@@ -145,14 +189,20 @@ okSuccess.addEventListener('click', () => {
   [paciente, procedimento, executado, prescricao].forEach(bindCounter);
 });
 
-// Helpers
+// ====== payload (inclui motivos) ======
 function buildPayload(validate){
+  const motivosArr = motivosHidden.value
+    .split(';')
+    .map(s => s.trim())
+    .filter(Boolean);
+
   const data = {
     paciente: paciente.value.trim(),
     cpf: cpfInput.value.trim(),
     procedimento: procedimento.value.trim(),
     executado: executado.value.trim(),
     prescricao: prescricao.value.trim(),
+    motivos: motivosArr,          // [MOTIVOS] array padronizado
     empresa: 'OdontoVision',
     timestamp: new Date().toISOString()
   };
@@ -163,6 +213,97 @@ function buildPayload(validate){
   if(!data.cpf || !isValidCPF(data.cpf)){ showToast('CPF inválido.'); cpfInput.focus(); return null; }
   if(!data.procedimento){ showToast('Informe o procedimento.'); procedimento.focus(); return null; }
   if(!data.executado){ showToast('Descreva o que foi executado.'); executado.focus(); return null; }
+  if(data.motivos.length === 0){  // [MOTIVOS] obrigatório
+    showToast('Selecione pelo menos um motivo da consulta.');
+    motivosWrap.setAttribute('open','');
+    return null;
+  }
 
   return data;
 }
+
+// ============================
+// Coleta Motivos (multiselect)
+// ============================
+function getMotivosSelecionados(){
+  const wrap = document.getElementById('motivosWrap');
+  const checks = wrap.querySelectorAll('input[type="checkbox"]');
+  const out = [];
+  checks.forEach(ch => { if(ch.checked) out.push(ch.value); });
+  return out;
+}
+function renderMotivosSummary(){
+  const sel = getMotivosSelecionados();
+  const sum = document.getElementById('motivosSummary');
+  if (!sel.length) { sum.innerHTML = 'Selecione um ou mais…'; return; }
+  sum.innerHTML = sel.map(v => `<span class="chip">${v}</span>`).join('');
+}
+document.querySelectorAll('#motivosWrap input[type="checkbox"]').forEach(ch => {
+  ch.addEventListener('change', renderMotivosSummary);
+});
+renderMotivosSummary();
+
+// ============================
+// Envio do formulário (POST)
+// ============================
+async function postConsulta(payload){
+  const res = await fetch('http://127.0.0.1:5001/api/consultas', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if(!res.ok){
+    const txt = await res.text();
+    throw new Error(txt || 'Falha ao enviar.');
+  }
+  return res.json();
+}
+
+// ===== API =====
+const API_BASE = 'http://127.0.0.1:5001/api';
+
+async function apiPost(path, body){
+  const res = await fetch(API_BASE + path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = buildPayload(true);
+  if(!payload) return;
+
+  // mapeia para o que a API espera
+  const body = {
+    paciente_nome: payload.paciente,
+    cpf: payload.cpf.replace(/\D/g,''),
+    procedimento: payload.procedimento,
+    executado: payload.executado,
+    prescricao: payload.prescricao,
+    dentista: 'Dentista',                 // se quiser, trocamos pelo nome logado
+    created_at: payload.timestamp,
+    motivos: payload.motivos              // array
+  };
+
+  try{
+    await apiPost('/consultas', body);
+    localStorage.removeItem(DRAFT_KEY);
+    showToast('Registro salvo.');
+    // opcional: ir direto pro Admin
+    // window.location.href = 'admin.html';
+    successModal.showModal();
+  }catch(err){
+    console.error(err);
+    showToast('Erro ao salvar registro.');
+  }
+});
+
+// ao fechar o modal de sucesso, redireciona p/ Admin
+okSuccess.addEventListener('click', () => {
+  successModal.close();
+  window.location.href = 'admin.html';
+});

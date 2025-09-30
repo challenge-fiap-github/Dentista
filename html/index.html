@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OdontoVision — Registro de Consulta</title>
 
-  <!-- Fonte -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -92,6 +91,58 @@
             </div>
           </div>
 
+          <!-- Motivos (obrigatório) -->
+          <div class="grid">
+            <div class="field full">
+              <label for="motivosHidden">Motivo(s) da consulta <span class="req">*</span></label>
+
+              <!-- resumo em chips + contador -->
+              <div id="motivosChips" class="chips-wrap" aria-live="polite"></div>
+
+              <!-- dropdown compacto -->
+              <details id="motivosWrap" class="multiselect" data-required>
+                <summary id="motivosSummary">
+                  <span class="summary-title">Selecione um ou mais…</span>
+                  <span class="summary-count" id="motivosCount" aria-hidden="true">0 selecionado(s)</span>
+                </summary>
+
+                <div class="multiselect-panel">
+                  <!-- coluna 1 -->
+                  <label><input type="checkbox" value="Dor espontânea"> Dor espontânea</label>
+                  <label><input type="checkbox" value="Dor à mastigação"> Dor à mastigação</label>
+                  <label><input type="checkbox" value="Sensibilidade ao frio"> Sensibilidade ao frio</label>
+                  <label><input type="checkbox" value="Sensibilidade ao quente"> Sensibilidade ao quente</label>
+                  <label><input type="checkbox" value="Fratura dentária"> Fratura dentária</label>
+                  <label><input type="checkbox" value="Sangramento gengival"> Sangramento gengival</label>
+                  <label><input type="checkbox" value="Mobilidade dentária"> Mobilidade dentária</label>
+                  <label><input type="checkbox" value="Cárie visível"> Cárie visível</label>
+                  <label><input type="checkbox" value="Trauma"> Trauma</label>
+                  <label><input type="checkbox" value="Halitose"> Halitose</label>
+                  <!-- coluna 2 -->
+                  <label><input type="checkbox" value="Estética"> Estética</label>
+                  <label><input type="checkbox" value="Revisão / retorno"> Revisão / retorno</label>
+                  <label><input type="checkbox" value="Pós-operatório"> Pós-operatório</label>
+                  <label><input type="checkbox" value="Manutenção de prótese"> Manutenção de prótese</label>
+                  <label><input type="checkbox" value="Checagem ortodôntica"> Checagem ortodôntica</label>
+                  <label><input type="checkbox" value="Pericoronarite"> Pericoronarite</label>
+                  <label><input type="checkbox" value="Controle de placa"> Controle de placa</label>
+                  <label><input type="checkbox" value="Tártaro"> Tártaro</label>
+                  <label><input type="checkbox" value="Abscesso"> Abscesso</label>
+                  <label><input type="checkbox" value="Sensibilidade pós-clareamento"> Sensibilidade pós-clareamento</label>
+
+                  <div class="multiselect-actions">
+                    <button type="button" class="btn ghost" id="btnMotivosLimpar">Limpar seleção</button>
+                    <button type="button" class="btn primary" id="btnMotivosOk">Concluir</button>
+                  </div>
+                </div>
+              </details>
+
+              <!-- input escondido para tornar obrigatório -->
+              <input id="motivosHidden" name="motivos" type="text" required hidden />
+              <small class="hint">Escolha pelo menos um motivo. Isso ajuda a padronizar o cadastro.</small>
+            </div>
+          </div>
+
           <div class="actions">
             <button type="button" class="btn ghost" id="btnLimpar">Limpar</button>
             <div class="spacer"></div>
@@ -102,7 +153,6 @@
     </section>
   </main>
 
-  <!-- Modal de sucesso -->
   <dialog id="successModal" class="modal">
     <div class="modal-card">
       <div class="modal-header">
@@ -118,7 +168,6 @@
     </div>
   </dialog>
 
-  <!-- Toast (mensagens curtas) -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <footer class="ov-footer">
