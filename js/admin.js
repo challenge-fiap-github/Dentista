@@ -35,6 +35,7 @@ function authHeaders() {
 // ============================
 const toast = document.getElementById('toast');
 function showToast(msg, ms = 2400) {
+  if (!toast) return;
   toast.textContent = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), ms);
@@ -71,26 +72,36 @@ const norm = s => (s ?? '').toString().normalize('NFD').replace(/[\u0300-\u036f]
 const isAtencao = s => norm(s) === 'atencao';
 
 // também trate cenários onde o back manda uma flag (fraude: 1)
-function isAttentionLike(obj){
+function isAttentionLike(obj) {
   return isAtencao(obj?.status) || obj?.fraude === 1 || obj?.fraude === '1' || norm(obj?.status) === 'suspeito';
 }
 
 function badgeHtml(status) {
   const s = norm(status);
-  if (s === 'aprovado') return `<span class="badge badge-success" title="Aprovado">Aprovado</span>`;
-  if (s === 'reprovado') return `<span class="badge badge-danger" title="Reprovado">Reprovado</span>`;
+  if (s === 'aprovado')   return `<span class="badge badge-success" title="Aprovado">Aprovado</span>`;
+  if (s === 'reprovado')  return `<span class="badge badge-danger" title="Reprovado">Reprovado</span>`;
   if (s === 'em_analise') return `<span class="badge badge-warning" title="Em análise">Em análise</span>`;
-  if (s === 'atencao') return `<span class="badge badge-warning" title="Caso em atenção">Atenção</span>`;
-  if (s === 'novo') return `<span class="badge badge-neutral" title="Novo">Novo</span>`;
-  // fallback
+  if (s === 'atencao')    return `<span class="badge badge-warning" title="Caso em atenção">Atenção</span>`;
+  if (s === 'novo')       return `<span class="badge badge-neutral" title="Novo">Novo</span>`;
   const label = (status ?? '—').toString().replace('_', ' ');
   return `<span class="badge badge-neutral">${label}</span>`;
 }
 
+// >>> AJUSTE CRÍTICO: ler motivoAtencao (camelCase) vindo da API.
+// fallback exibindo "Atenção" quando o caso é atenção e não há motivo.
 function getMotivo(obj) {
-  // onde o motivo pode vir
-  const motivo = obj?.motivo_atencao || obj?.motivos || obj?.attentionReason || obj?.motivo || '';
-  return isAttentionLike(obj) && motivo ? motivo : '—';
+  const motivo =
+    obj?.motivoAtencao ||     // API atual (normalize_row)
+    obj?.motivo_atencao ||    // CSV lido direto (casos antigos)
+    obj?.motivos ||           // coluna auxiliar que você gera no CSV
+    obj?.attentionReason ||   // legado
+    obj?.motivo ||            // qualquer outro
+    '';
+
+  if (isAttentionLike(obj)) {
+    return (motivo && String(motivo).trim()) ? motivo : 'Atenção';
+  }
+  return '—';
 }
 
 // ============================
@@ -106,7 +117,7 @@ function rowHtml(item) {
       <td>${item.dentista?.nome ?? item.dentista ?? '—'}</td>
       <td>${badgeHtml(item.status)}</td>
       <td>${getMotivo(item)}</td>
-      <td>${new Date(item.createdAt ?? item.created_at).toLocaleString('pt-BR')}</td>
+      <td>${formatDate(item.createdAt ?? item.created_at)}</td>
       <td>
         <button class="btn ghost" onclick="verDetalhe(${item.id})">Ver</button>
       </td>
@@ -128,8 +139,8 @@ async function carregarTabela(page = 0) {
       status: statusSel,
       page,
       size: 10,
-      startDate,
-      endDate
+      startDate, // ignorado pelo back (ok)
+      endDate    // ignorado pelo back (ok)
     });
 
     let items = data.content || [];
@@ -141,13 +152,14 @@ async function carregarTabela(page = 0) {
 
     // filtro local de possíveis fraudes
     if (fraudeFilter === 'suspicious') {
-      items = items.filter(x => x.suspicious === true || (x.status || '').toLowerCase() === 'atencao');
+      items = items.filter(x => x.suspicious === true || isAtencao(x.status));
     } else if (fraudeFilter === 'normal') {
       items = items.filter(x => (x.suspicious === false) && ((x.status || '').toLowerCase() === 'normal'));
     }
 
     // render tabela
     const tbody = document.querySelector('#tabela tbody');
+    if (!tbody) return;
     if (!items.length) {
       tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">Nenhum registro</td></tr>`;
     } else {
@@ -157,10 +169,10 @@ async function carregarTabela(page = 0) {
     // paginação baseada no total do servidor
     renderPaginacao(data.totalPages, data.number);
 
-    // popular ano (uma vez por carregamento) — com base no dataset original da página
-    popularAnosSelect(data.content || items);
+    // popular ano com base no conjunto exibido
+    popularAnosSelect(items);
 
-    // atualiza gráfico conforme itens visíveis
+    // atualiza gráfico do topo (se você estiver usando esse gráfico)
     atualizarGrafico(items);
   } catch (e) {
     console.error(e);
@@ -211,7 +223,7 @@ function renderPaginacao(totalPages, currentPage) {
 }
 
 // ============================
-// Gráfico (Chart.js) — linhas / barras com controle de séries
+// Gráfico (Chart.js) — linhas/barras com controle de séries
 // ============================
 let chart;
 
@@ -226,8 +238,10 @@ function popularAnosSelect(items) {
   // ativa séries por sexo só se houver algum item com sexo M/F
   const hasMale   = items.some(x => (x.paciente?.sexo || '').toUpperCase() === 'M');
   const hasFemale = items.some(x => (x.paciente?.sexo || '').toUpperCase() === 'F');
-  document.getElementById('serieHomensWrap').style.display   = hasMale ? 'inline-flex' : 'none';
-  document.getElementById('serieMulheresWrap').style.display = hasFemale ? 'inline-flex' : 'none';
+  const menWrap = document.getElementById('serieHomensWrap');
+  const womenWrap = document.getElementById('serieMulheresWrap');
+  if (menWrap) menWrap.style.display = hasMale ? 'inline-flex' : 'none';
+  if (womenWrap) womenWrap.style.display = hasFemale ? 'inline-flex' : 'none';
 }
 
 function aggregateByMonth(items) {
@@ -304,6 +318,7 @@ async function verDetalhe(id) {
   try {
     const d = await apiGet(`/diagnosticos/${id}`);
     const modal = document.getElementById('detalheModal');
+    if (!modal) return;
     modal.querySelector('.modal-body').innerHTML = renderDetail(d);
     modal.showModal();
 
@@ -316,7 +331,6 @@ async function verDetalhe(id) {
   }
 }
 
-// 2) renderDetail
 function renderDetail(d) {
   const motivo = getMotivo(d);
   return `
@@ -349,8 +363,10 @@ async function alterarStatus(id, status) {
   try {
     await apiPatch(`/diagnosticos/${id}/status`, { status });
     showToast(`Status alterado para ${status.replace('_',' ')}`);
-    document.getElementById('detalheModal').close();
+    document.getElementById('detalheModal')?.close();
     carregarTabela();
+    // também atualiza o resumo
+    carregarGrafico();
   } catch (e) {
     console.error(e);
     showToast('Erro ao atualizar status.');
@@ -358,38 +374,10 @@ async function alterarStatus(id, status) {
 }
 
 // ============================
-// Inicialização
+// Gráfico de resumo (segundo gráfico)
 // ============================
-document.addEventListener('DOMContentLoaded', () => {
-  carregarTabela();
-
-  document.getElementById('searchBtn')?.addEventListener('click', () => carregarTabela(0));
-  document.getElementById('fraudeFilter')?.addEventListener('change', () => carregarTabela(0));
-  document.getElementById('yearSelect')?.addEventListener('change', () => carregarTabela(0));
-
-  ['serieTotal','serieAtencao','serieNormal','serieHomens','serieMulheres','chartBars']
-    .forEach(id => document.getElementById(id)?.addEventListener('change', () => carregarTabela(0)));
-
-  // Tema & logout
-  (function initTheme(){
-    const saved = localStorage.getItem('ov-theme');
-    if (saved === 'dark') document.documentElement.classList.add('dark');
-  })();
-  document.getElementById('btnDarkMode')?.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('ov-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-  });
-  document.getElementById('year') && (document.getElementById('year').textContent = new Date().getFullYear());
-  document.getElementById('btnLogout')?.addEventListener('click', () => {
-    localStorage.removeItem('ov-auth');
-    localStorage.removeItem('ov-auth-role');
-    window.location.href = 'login.html';
-  });
-});
-
-// 2.2 Buscar todas as páginas para o gráfico
 async function fetchAllDiagnosticos(params = {}) {
-  const size = 100; // busca de 100 em 100 para acelerar
+  const size = 100; // busca de 100 em 100
   let page = 0;
   let all = [];
   while (true) {
@@ -402,7 +390,6 @@ async function fetchAllDiagnosticos(params = {}) {
   return all;
 }
 
-// 2.3 Agregação por ano/mês + filtro
 function getYear(d) {
   try { return new Date(d).getFullYear(); } catch { return null; }
 }
@@ -411,8 +398,6 @@ function getMonthIdx(d) {
 }
 
 function buildMonthlySeries(items, year, filter) {
-  // months: 0..11
-  const months = Array.from({length: 12}, (_, i) => i);
   const normal = Array(12).fill(0);
   const atencao = Array(12).fill(0);
 
@@ -426,12 +411,11 @@ function buildMonthlySeries(items, year, filter) {
     else normal[m]++;
   });
 
-  if (filter === 'normal') return { normal, atencao: Array(12).fill(0) };
+  if (filter === 'normal')  return { normal, atencao: Array(12).fill(0) };
   if (filter === 'atencao') return { normal: Array(12).fill(0), atencao };
   return { normal, atencao };
 }
 
-// 2.4 Montagem do seletor de anos & render do Chart.js
 let fraudChart; // instancia Chart.js
 
 function fillYearSelect(items) {
@@ -442,11 +426,8 @@ function fillYearSelect(items) {
     new Set(items.map(x => getYear(x.createdAt)).filter(Boolean))
   ).sort((a, b) => a - b);
 
-  // fallback: se não achar anos, usa o atual
   const years = allYears.length ? allYears : [new Date().getFullYear()];
-
   sel.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join('');
-  // seleciona o maior ano disponível
   sel.value = String(years[years.length - 1]);
 }
 
@@ -455,36 +436,17 @@ function renderFraudChart(series) {
   if (!ctx) return;
 
   const labels = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-
   const data = {
     labels,
     datasets: [
-      {
-        label: 'Normal',
-        data: series.normal,
-        borderWidth: 2,
-        tension: 0.25,
-        pointRadius: 3
-      },
-      {
-        label: 'Atenção',
-        data: series.atencao,
-        borderWidth: 2,
-        tension: 0.25,
-        pointRadius: 3
-      }
+      { label: 'Normal',  data: series.normal,  borderWidth: 2, tension: 0.25, pointRadius: 3 },
+      { label: 'Atenção', data: series.atencao, borderWidth: 2, tension: 0.25, pointRadius: 3 }
     ]
   };
-
   const opts = {
     responsive: true,
-    plugins: {
-      legend: { position: 'top' },
-      tooltip: { mode: 'index', intersect: false }
-    },
-    scales: {
-      y: { beginAtZero: true, ticks: { precision: 0 } }
-    }
+    plugins: { legend: { position: 'top' }, tooltip: { mode: 'index', intersect: false } },
+    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
   };
 
   if (fraudChart) {
@@ -496,17 +458,15 @@ function renderFraudChart(series) {
   }
 }
 
-// 2.5 Ciclo de carga do gráfico (com filtros)
 async function carregarGrafico() {
   try {
-    // traga TODOS para não depender da paginação da tabela
     const all = await fetchAllDiagnosticos({});
     fillYearSelect(all);
 
     const yearSel = document.getElementById('chartYear');
     const filterSel = document.getElementById('chartFilter');
-    const year = parseInt(yearSel.value, 10);
-    const filter = (filterSel.value || 'todos').toLowerCase();
+    const year = parseInt(yearSel?.value ?? new Date().getFullYear(), 10);
+    const filter = (filterSel?.value || 'todos').toLowerCase();
 
     const series = buildMonthlySeries(all, year, filter);
     renderFraudChart(series);
@@ -516,21 +476,22 @@ async function carregarGrafico() {
   }
 }
 
-// listeners dos filtros do gráfico
-document.getElementById('chartYear')?.addEventListener('change', carregarGrafico);
-document.getElementById('chartFilter')?.addEventListener('change', carregarGrafico);
-
-// 2.6 Inicialização
+// ============================
+// Inicialização ÚNICA
+// ============================
 document.addEventListener('DOMContentLoaded', () => {
   carregarTabela();
   carregarGrafico();
 
-  document.getElementById('searchBtn')?.addEventListener('click', () => carregarTabela());
+  document.getElementById('searchBtn')?.addEventListener('click', () => carregarTabela(0));
   document.getElementById('fraudeFilter')?.addEventListener('change', () => carregarTabela(0));
   document.getElementById('yearSelect')?.addEventListener('change', () => carregarTabela(0));
 
   ['serieTotal','serieAtencao','serieNormal','serieHomens','serieMulheres','chartBars']
     .forEach(id => document.getElementById(id)?.addEventListener('change', () => carregarTabela(0)));
+
+  document.getElementById('chartYear')?.addEventListener('change', carregarGrafico);
+  document.getElementById('chartFilter')?.addEventListener('change', carregarGrafico);
 
   // Tema & logout
   (function initTheme(){
@@ -541,7 +502,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.toggle('dark');
     localStorage.setItem('ov-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
   });
-  document.getElementById('year') && (document.getElementById('year').textContent = new Date().getFullYear());
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
   document.getElementById('btnLogout')?.addEventListener('click', () => {
     localStorage.removeItem('ov-auth');
     localStorage.removeItem('ov-auth-role');
