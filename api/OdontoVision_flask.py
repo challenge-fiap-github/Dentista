@@ -110,8 +110,6 @@ def normalize_row(row: pd.Series) -> Dict[str, Any]:
         "paciente": {
             "nome": str(row.get("paciente_nome", "—")),
             "cpf": str(row.get("cpf", "—")),
-            # se existir coluna 'sexo' no CSV, exporta
-            "sexo": str(row.get("sexo", "")).upper()  # "M" | "F" | ""
         },
         "dentista": {"nome": str(row.get("dentista", "—"))},
         "procedimento": str(row.get("procedimento", "—")),
@@ -119,8 +117,8 @@ def normalize_row(row: pd.Series) -> Dict[str, Any]:
         "prescricao": str(row.get("prescricao", "")),
         "status": str(row.get("status", "normal")).lower(),
         "suspicious": bool(row.get("suspicious", False)),
-        "attentionReason": str(row.get("attention_reason", "")),
-        "createdAt": to_iso(row.get("created_at"))
+        "motivoAtencao": str(row.get("motivo_atencao", "")),   # <<< AQUI
+        "createdAt": to_iso(row.get("created_at")),
     }
 
 def paginate(items: List[Dict[str, Any]], page: int, size: int):
@@ -203,6 +201,71 @@ def prever_fraude():
 @app.get("/api/ping")
 def ping():
     return jsonify(ok=True, msg="pong")
+
+@app.post("/api/consultas")
+def criar_consulta():
+    """
+    Recebe o registro do dentista e grava no CSV/DataFrame.
+    Já recalcula as regras de suspeita para o CPF.
+    """
+    global raw_df
+    body = request.get_json(force=True, silent=True) or {}
+
+    paciente_nome = str(body.get("paciente_nome", "")).strip()
+    cpf = re.sub(r"\D", "", str(body.get("cpf", "")))
+    procedimento = str(body.get("procedimento", "")).strip()
+    executado = str(body.get("executado", "")).strip()
+    prescricao = str(body.get("prescricao", "")).strip()
+    dentista = str(body.get("dentista", "Dentista")).strip() or "Dentista"
+    created_at = body.get("created_at") or datetime.now().isoformat()
+    motivos = body.get("motivos", [])  # array opcional
+
+    # validações simples
+    if not paciente_nome or not cpf or not procedimento or not executado:
+        return jsonify({"detail": "Campos obrigatórios ausentes."}), 422
+
+    # garante colunas novas
+    for col in ["motivos", "motivo_atencao", "suspicious", "status"]:
+        if col not in raw_df.columns:
+            raw_df[col] = "" if col != "suspicious" else False
+    if "fraude" not in raw_df.columns:
+        raw_df["fraude"] = 0
+
+    # novo id
+    new_id = (int(raw_df["id"].max()) + 1) if ("id" in raw_df.columns and not raw_df.empty) else 1
+
+    # monta linha
+    row = {
+        "id": new_id,
+        "paciente_nome": paciente_nome,
+        "cpf": cpf,
+        "procedimento": procedimento,
+        "executado": executado,
+        "prescricao": prescricao,
+        "dentista": dentista,
+        "created_at": created_at,
+        "fraude": 0,
+        "status": "normal",
+        "motivos": "; ".join(motivos) if isinstance(motivos, list) else str(motivos),
+    }
+
+    # anexa
+    raw_df = pd.concat([raw_df, pd.DataFrame([row])], ignore_index=True)
+
+    # reavalia suspeita (todas as regras para o CPF)
+    try:
+        raw_df = _reprocess_rules_for_cpf(raw_df, cpf)
+    except Exception as e:
+        print("Warn marcar suspeita:", e)
+
+    # persiste
+    try:
+        raw_df.to_csv(CSV_FILE, index=False)
+    except Exception as e:
+        print("Warn ao salvar CSV:", e)
+
+    # retorna a linha normalizada
+    return jsonify(normalize_row(raw_df.iloc[-1])), 201
 
 # ======================
 # Regras de Negócio
@@ -341,6 +404,152 @@ def marcar_suspeitas_multiplas_regras(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+def _norm(s: str) -> str:
+    return (s or "").strip().lower()
+
+def _is_profilaxia(txt: str) -> bool:
+    t = _norm(txt)
+    return "profilaxia" in t or "limpeza" in t
+
+def _is_canal(txt: str) -> bool:
+    t = _norm(txt)
+    return "tratamento de canal" in t or "canal" in t
+
+def _is_clareamento(txt: str) -> bool:
+    return "clareamento" in _norm(txt)
+
+def _is_restauracao(txt: str) -> bool:
+    return "restauração" in _norm(txt) or "restauracao" in _norm(txt)
+
+def _is_extracao(txt: str) -> bool:
+    t = _norm(txt)
+    return "extração" in t or "extracao" in t
+
+def _append_reason(cur: str, extra: str) -> str:
+    cur = (cur or "").strip()
+    if not cur:
+        return extra
+    # evita duplicados simples
+    parts = [p.strip() for p in cur.split(";") if p.strip()]
+    if extra not in parts:
+        parts.append(extra)
+    return "; ".join(parts)
+
+def _reprocess_rules_for_cpf(df: pd.DataFrame, cpf: str) -> pd.DataFrame:
+    """
+    Reprocessa SOMENTE os registros do CPF informado e aplica as regras:
+      R1: Profilaxia -> Canal em <=15 dias
+      R2: Canal repetido em <=30 dias
+      R3: Clareamento -> Canal em <=7 dias
+      R4: Restauração -> Extração em <=20 dias
+      R5: Conflitos no mesmo dia (Profilaxia + Extração, Clareamento + Canal)
+    """
+    from datetime import timedelta
+
+    df = df.copy()
+    df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
+
+    if "suspicious" not in df.columns:
+        df["suspicious"] = False
+    if "motivo_atencao" not in df.columns:
+        df["motivo_atencao"] = ""
+
+    locked = {"aprovado", "reprovado", "em_analise"}
+
+    # pega somente os índices daquele CPF
+    mask = df["cpf"].astype(str) == str(cpf)
+    idxs = df.index[mask]
+    if not len(idxs):
+        return df
+
+    # Zera flags desse recorte, mas mantém status travados
+    df.loc[idxs, "suspicious"] = False
+    # NÃO limpamos motivo_atencao aqui porque podemos compor; vamos reconstruí-lo
+    df.loc[idxs, "motivo_atencao"] = ""
+
+    # Ordena por data no recorte
+    g = df.loc[idxs].sort_values("created_at")
+
+    # ---------- R5: Conflitos no mesmo dia ----------
+    # agrupar por dia
+    g["dia"] = g["created_at"].dt.date
+    for dia, dayblock in g.groupby("dia"):
+        procs = dayblock["procedimento"].astype(str).tolist()
+        has_profi = any(_is_profilaxia(p) for p in procs)
+        has_extr  = any(_is_extracao(p) for p in procs)
+        has_cla   = any(_is_clareamento(p) for p in procs)
+        has_canal = any(_is_canal(p) for p in procs)
+
+        # conflitantes
+        reasons = []
+        if has_profi and has_extr:
+            reasons.append("Conflito no mesmo dia: profilaxia e extração.")
+        if has_cla and has_canal:
+            reasons.append("Conflito no mesmo dia: clareamento e tratamento de canal.")
+
+        if reasons:
+            for j in dayblock.index:
+                df.loc[j, "suspicious"] = True
+                df.loc[j, "motivo_atencao"] = _append_reason(df.loc[j, "motivo_atencao"], "; ".join(reasons))
+                st = _norm(df.loc[j, "status"])
+                if st not in locked:
+                    df.loc[j, "status"] = "atencao"
+
+    # ---------- Regras de janelas temporais (pares ordenados) ----------
+    glist = g.reset_index()  # tem col 'index' com o índice original
+    for i in range(len(glist) - 1):
+        idx_i = glist.loc[i, "index"]
+        idx_j = glist.loc[i + 1, "index"]
+
+        p1 = str(df.loc[idx_i, "procedimento"])
+        p2 = str(df.loc[idx_j, "procedimento"])
+        d1 = df.loc[idx_i, "created_at"]
+        d2 = df.loc[idx_j, "created_at"]
+
+        if pd.isna(d1) or pd.isna(d2) or d2 < d1:
+            continue
+
+        delta = d2 - d1
+
+        reasons = []
+
+        # R1: profilaxia -> canal <=15d
+        if _is_profilaxia(p1) and _is_canal(p2) and delta <= timedelta(days=15):
+            reasons.append("Profilaxia seguida de tratamento de canal em até 15 dias.")
+
+        # R2: canal repetido <=30d
+        if _is_canal(p1) and _is_canal(p2) and delta <= timedelta(days=30):
+            reasons.append("Tratamento de canal repetido em até 30 dias.")
+
+        # R3: clareamento -> canal <=7d
+        if _is_clareamento(p1) and _is_canal(p2) and delta <= timedelta(days=7):
+            reasons.append("Clareamento seguido de tratamento de canal em até 7 dias.")
+
+        # R4: restauração -> extração <=20d
+        if _is_restauracao(p1) and _is_extracao(p2) and delta <= timedelta(days=20):
+            reasons.append("Restauração seguida de extração em até 20 dias.")
+
+        if reasons:
+            # marcamos no segundo atendimento (idx_j)
+            df.loc[idx_j, "suspicious"] = True
+            for r in reasons:
+                df.loc[idx_j, "motivo_atencao"] = _append_reason(df.loc[idx_j, "motivo_atencao"], r)
+            st = _norm(df.loc[idx_j, "status"])
+            if st not in locked:
+                df.loc[idx_j, "status"] = "atencao"
+
+    # preenche vazios com normal se nada suspeito e não travado
+    for j in g.index:
+        if not bool(df.loc[j, "suspicious"]):
+            st = _norm(df.loc[j, "status"])
+            if st not in locked and st != "normal":
+                # se ficou algo tipo "", corrige para normal
+                df.loc[j, "status"] = "normal"
+            # limpa motivo se não está suspeito
+            if not df.loc[j, "suspicious"]:
+                df.loc[j, "motivo_atencao"] = df.loc[j, "motivo_atencao"] or ""
+
+    return df
 # aplica as regras
 raw_df = marcar_suspeitas_multiplas_regras(raw_df)
 

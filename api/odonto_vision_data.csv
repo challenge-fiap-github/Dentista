@@ -1,201 +1,202 @@
-id,paciente_nome,cpf,procedimento,executado,prescricao,dentista,created_at,fraude,status
-1,João Silva,12345678901,Profilaxia (limpeza),Profilaxia completa; boca saudável,Enxágue bucal 2x/dia,Dra. Ana Clara,2025-09-01T09:10:00,0,normal
-2,João Silva,12345678901,Tratamento de canal,Canal dente 26,,Dra. Ana Clara,2025-09-12T10:00:00,1,atencao
-3,Maria Souza,98765432100,Profilaxia (limpeza),Profilaxia com orientação,,Dr. Pedro Lima,2025-09-02T14:20:00,0,normal
-4,Maria Souza,98765432100,Tratamento de canal,Canal dente 36,,Dr. Pedro Lima,2025-09-30T15:30:00,0,normal
-5,Carlos Braga,10293847566,Profilaxia (limpeza),Higienização e polimento,,Dra. Beatriz Luz,2025-09-05T11:00:00,0,normal
-6,Carlos Braga,10293847566,Tratamento de canal,Canal dente 12,,Dra. Beatriz Luz,2025-09-18T08:40:00,1,atencao
-7,Ana Ribeiro,22334455667,Extração dentária,Extração dente 18,Ibuprofeno 400mg,Dra. Ana Clara,2025-08-28T16:10:00,0,normal
-8,Felipe Santos,33445566778,Tratamento de canal,Canal dente 21,,Dr. Pedro Lima,2025-09-07T10:50:00,0,normal
-9,Laura Martins,44556677889,Profilaxia (limpeza),Profilaxia básica,,Dra. Beatriz Luz,2025-09-03T09:00:00,0,normal
-10,Laura Martins,44556677889,Aplicação de flúor,Aplicado verniz de flúor,,Dra. Beatriz Luz,2025-09-20T09:20:00,0,normal
-11,Paulo Nunes,55667788990,Restauração de resina,Restauração dente 14,,Dra. Ana Clara,2025-09-09T13:00:00,0,normal
-12,Bruna Lopes,66778899001,Profilaxia (limpeza),Profilaxia e orientação,,Dr. Pedro Lima,2025-09-10T17:40:00,0,normal
-13,Bruna Lopes,66778899001,Tratamento de canal,Canal dente 46,,Dr. Pedro Lima,2025-09-24T08:15:00,0,normal
-14,Renato Dias,77889900112,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2025-09-04T15:05:00,0,normal
-15,Sofia Alves,88990011223,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-09-06T10:30:00,0,normal
-16,Sofia Alves,88990011223,Tratamento de canal,Canal dente 24,,Dra. Ana Clara,2025-09-19T12:45:00,1,atencao
-17,Marcos Melo,99001122334,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-09-11T18:00:00,0,normal
-18,Carla Pires,10111213141,Cimentação de coroa/prótese,Cimentação coroa 15,,Dra. Beatriz Luz,2025-09-08T09:25:00,0,normal
-19,Carla Pires,10111213141,Tratamento de canal,Canal dente 15,,Dra. Beatriz Luz,2025-10-10T10:05:00,0,normal
-20,Diego Costa,12131415161,Tratamento de canal,Canal dente 11,,Dr. Pedro Lima,2025-09-16T16:55:00,0,normal
-21,João Silva,12345678901,Restauração de resina,Restauração dente 17,,Dra. Ana Clara,2025-10-05T09:10:00,0,normal
-22,Maria Souza,98765432100,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-01T10:30:00,0,normal
-23,Carlos Braga,10293847566,Controle de retorno,Sem queixas,,Dra. Beatriz Luz,2025-10-03T14:00:00,0,normal
-24,Ana Ribeiro,22334455667,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-15T09:00:00,0,normal
-25,Ana Ribeiro,22334455667,Tratamento de canal,Canal dente 47,,Dra. Ana Clara,2025-09-27T11:10:00,1,atencao
-26,Felipe Santos,33445566778,Raspagem supragengival,Raspagem moderada,Enxágue clorexidina,Dr. Pedro Lima,2025-09-21T15:25:00,0,normal
-27,Laura Martins,44556677889,Clareamento dental,Segunda sessão,,Dra. Beatriz Luz,2025-10-02T10:00:00,0,normal
-28,Paulo Nunes,55667788990,Profilaxia (limpeza),Profilaxia e polimento,,Dra. Ana Clara,2025-09-01T08:45:00,0,normal
-29,Paulo Nunes,55667788990,Tratamento de canal,Canal dente 25,,Dra. Ana Clara,2025-09-14T09:20:00,1,atencao
-30,Bruna Lopes,66778899001,Aplicação de flúor,Verniz neutro,,Dr. Pedro Lima,2025-10-08T12:00:00,0,normal
-31,Renato Dias,77889900112,Profilaxia (limpeza),Profilaxia com jato de bicarbonato,,Dra. Beatriz Luz,2025-09-12T08:30:00,0,normal
-32,Renato Dias,77889900112,Tratamento de canal,Canal dente 13,,Dra. Beatriz Luz,2025-09-23T09:15:00,1,atencao
-33,Sofia Alves,88990011223,Controle de retorno,Assintomático,,Dra. Ana Clara,2025-10-04T13:30:00,0,normal
-34,Marcos Melo,99001122334,Profilaxia (limpeza),Profilaxia leve,,Dr. Pedro Lima,2025-09-25T10:00:00,0,normal
-35,Carla Pires,10111213141,Retirada de pontos,Pós-operatório,,Dra. Beatriz Luz,2025-09-29T16:20:00,0,normal
-36,Diego Costa,12131415161,Restauração de resina,Restauração dente 22,,Dr. Pedro Lima,2025-10-01T11:30:00,0,normal
-37,Aline Barros,13141516172,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2025-09-06T09:10:00,0,normal
-38,Aline Barros,13141516172,Tratamento de canal,Canal dente 35,,Dra. Ana Clara,2025-09-18T10:10:00,1,atencao
-39,Gustavo Prado,14151617283,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-09-13T15:45:00,0,normal
-40,Helena Moraes,15161718294,Restauração de resina,Restauração dente 12,,Dra. Beatriz Luz,2025-09-20T09:20:00,0,normal
-41,Ivan Rocha,16171819305,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-09-08T14:00:00,0,normal
-42,Ivan Rocha,16171819305,Tratamento de canal,Canal dente 27,,Dra. Ana Clara,2025-09-22T09:40:00,1,atencao
-43,Julia Pacheco,17181920316,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dr. Pedro Lima,2025-09-17T16:30:00,0,normal
-44,Kaio Araujo,18192021327,Extração dentária,Extração dente 38,Analgésico SOS,Dra. Beatriz Luz,2025-10-03T08:15:00,0,normal
-45,Larissa Freitas,19202122338,Profilaxia (limpeza),Higienização e orientação,,Dra. Ana Clara,2025-09-11T11:50:00,0,normal
-46,Mariana Teixeira,20212223349,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-09-26T18:10:00,0,normal
-47,Nicolas Prado,21222324350,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-10-06T10:05:00,0,normal
-48,Olívia Cunha,22232425361,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-02T09:10:00,0,normal
-49,Olívia Cunha,22232425361,Tratamento de canal,Canal dente 16,,Dra. Ana Clara,2025-09-14T13:25:00,1,atencao
-50,Paula Castro,23242526372,Restauração de resina,Restauração dente 23,,Dr. Pedro Lima,2025-09-28T12:35:00,0,normal
-51,Queila Azevedo,24252627383,Profilaxia (limpeza),Profilaxia com jato,,Dra. Beatriz Luz,2025-09-05T10:40:00,0,normal
-52,Queila Azevedo,24252627383,Tratamento de canal,Canal dente 33,,Dra. Beatriz Luz,2025-09-17T09:30:00,1,atencao
-53,Rafael Tavares,25262728394,Controle de retorno,Sem dor,,Dra. Ana Clara,2025-10-02T14:45:00,0,normal
-54,Sabrina Paes,26272829405,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-09-07T09:55:00,0,normal
-55,Tadeu Ramos,27282930416,Profilaxia (limpeza),Profilaxia completa,,Dra. Beatriz Luz,2025-09-03T11:25:00,0,normal
-56,Tadeu Ramos,27282930416,Tratamento de canal,Canal dente 44,,Dra. Beatriz Luz,2025-09-16T12:05:00,1,atencao
-57,Úrsula Neves,28293031427,Restauração de resina,Restauração dente 45,,Dra. Ana Clara,2025-09-29T16:00:00,0,normal
-58,Vinicius Reis,29303132438,Clareamento dental,Segunda sessão,,Dr. Pedro Lima,2025-10-04T18:30:00,0,normal
-59,Wesley Amorim,30313233449,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2025-09-09T10:15:00,0,normal
-60,Wesley Amorim,30313233449,Tratamento de canal,Canal dente 31,,Dra. Beatriz Luz,2025-09-22T09:50:00,1,atencao
-61,Xavier Lopes,31323334450,Aplicação de flúor,Verniz aplicado,,Dra. Ana Clara,2025-09-13T13:05:00,0,normal
-62,Yasmin Rocha,32333435461,Profilaxia (limpeza),Profilaxia com jato,,Dr. Pedro Lima,2025-09-06T08:30:00,0,normal
-63,Yasmin Rocha,32333435461,Tratamento de canal,Canal dente 14,,Dr. Pedro Lima,2025-09-18T10:00:00,1,atencao
-64,Zeca Moura,33343536472,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2025-09-20T15:10:00,0,normal
-65,Beatriz Salles,34353637483,Profilaxia (limpeza),Profilaxia preventiva,,Dra. Ana Clara,2025-09-01T09:30:00,0,normal
-66,Caio Dantas,35363738494,Restauração de resina,Restauração dente 36,,Dr. Pedro Lima,2025-09-27T11:40:00,0,normal
-67,Daniela Mourão,36373839505,Aplicação de flúor,Verniz pediátrico,,Dra. Beatriz Luz,2025-10-01T10:10:00,0,normal
-68,Elisa Campos,37383940516,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-07T09:05:00,0,normal
-69,Elisa Campos,37383940516,Tratamento de canal,Canal dente 22,,Dra. Ana Clara,2025-09-19T12:10:00,1,atencao
-70,Fabio Baroni,38404142527,Controle de retorno,Sem alterações,,Dr. Pedro Lima,2025-10-05T14:20:00,0,normal
-71,Gabriela Fontes,39414243538,Clareamento dental,Primeira sessão,,Dra. Beatriz Luz,2025-09-23T18:00:00,0,normal
-72,Henrique Vidal,40424344549,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2025-09-03T08:50:00,0,normal
-73,Henrique Vidal,40424344549,Tratamento de canal,Canal dente 41,,Dra. Ana Clara,2025-09-13T11:00:00,1,atencao
-74,Isabela Neri,41434445550,Restauração de resina,Restauração dente 32,,Dr. Pedro Lima,2025-09-30T15:30:00,0,normal
-75,Joana Prado,42444546561,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-10-02T09:40:00,0,normal
-76,Kevin Duarte,43454647572,Profilaxia (limpeza),Higienização e polimento,,Dra. Ana Clara,2025-09-05T10:20:00,0,normal
-77,Kevin Duarte,43454647572,Tratamento de canal,Canal dente 34,,Dra. Ana Clara,2025-09-17T13:30:00,1,atencao
-78,Luis Otávio,44464748583,Controle de retorno,Revisão sem dor,,Dr. Pedro Lima,2025-10-06T16:10:00,0,normal
-79,Monique Paz,45474849594,Raspagem supragengival,Raspagem moderada,Enxágue clorexidina,Dra. Beatriz Luz,2025-09-21T14:30:00,0,normal
-80,Nathalia Cruz,46484950605,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-10T09:00:00,0,normal
-81,Nathalia Cruz,46484950605,Tratamento de canal,Canal dente 18,,Dra. Ana Clara,2025-09-23T10:15:00,1,atencao
-82,Otávio Leme,47495051616,Clareamento dental,Segunda sessão,,Dr. Pedro Lima,2025-10-08T18:20:00,0,normal
-83,Priscila Nunes,48505152627,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-10-03T11:05:00,0,normal
-84,Renata Prado,49515253638,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2025-09-04T09:30:00,0,normal
-85,Renata Prado,49515253638,Tratamento de canal,Canal dente 37,,Dra. Ana Clara,2025-09-18T08:50:00,1,atencao
-86,Sergio Maia,50525354649,Restauração de resina,Restauração dente 11,,Dr. Pedro Lima,2025-09-29T12:10:00,0,normal
-87,Thais Bueno,51535455650,Profilaxia (limpeza),Profilaxia completa,,Dra. Beatriz Luz,2025-09-06T10:00:00,0,normal
-88,Thais Bueno,51535455650,Tratamento de canal,Canal dente 45,,Dra. Beatriz Luz,2025-09-19T11:45:00,1,atencao
-89,Ubirajara Luz,52545556661,Controle de retorno,Sem alterações,,Dra. Ana Clara,2025-10-01T14:40:00,0,normal
-90,Vanessa Reis,53555657672,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-05T10:30:00,0,normal
-91,William Souza,54565758683,Profilaxia (limpeza),Profilaxia com jato,,Dra. Beatriz Luz,2025-09-08T09:20:00,0,normal
-92,William Souza,54565758683,Tratamento de canal,Canal dente 28,,Dra. Beatriz Luz,2025-09-20T10:30:00,1,atencao
-93,Ximena Prado,55575859694,Restauração de resina,Restauração dente 21,,Dra. Ana Clara,2025-09-27T16:00:00,0,normal
-94,Yuri Cardozo,56585960705,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-09-22T18:10:00,0,normal
-95,Zélia Ramos,57596061716,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2025-09-03T08:40:00,0,normal
-96,Zélia Ramos,57596061716,Tratamento de canal,Canal dente 32,,Dra. Beatriz Luz,2025-09-14T12:00:00,1,atencao
-97,Bruno Sales,58606162727,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Ana Clara,2025-09-24T15:20:00,0,normal
-98,Camila Mota,59616263738,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-09T09:50:00,0,normal
-99,Debora Lima,60626364749,Profilaxia (limpeza),Profilaxia simples,,Dra. Beatriz Luz,2025-09-07T10:05:00,0,normal
-100,Debora Lima,60626364749,Tratamento de canal,Canal dente 17,,Dra. Beatriz Luz,2025-09-18T13:10:00,1,atencao
-101,André Matos,61626465760,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-01-07T09:30:00,0,normal
-102,André Matos,61626465760,Tratamento de canal,Canal dente 16,,Dra. Ana Clara,2025-01-18T10:20:00,1,atencao
-103,Bianca Torres,62636566771,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-02-11T11:05:00,0,normal
-104,Caio Prado,63646667782,Restauração de resina,Restauração dente 14,,Dra. Beatriz Luz,2025-02-22T14:45:00,0,normal
-105,Daniel Souza,64656768793,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2025-03-01T09:00:00,0,normal
-106,Daniel Souza,64656768793,Tratamento de canal,Canal dente 26,,Dra. Ana Clara,2025-03-12T10:10:00,1,atencao
-107,Elisa Moura,65676869804,Controle de retorno,Sem queixas,,Dr. Pedro Lima,2025-03-20T16:40:00,0,normal
-108,Fernando Reis,66686970815,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2025-04-05T15:10:00,0,normal
-109,Gisele Neri,67697071826,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-04-16T18:20:00,0,normal
-110,Henrique Costa,68707172837,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-05-03T08:30:00,0,normal
-111,Henrique Costa,68707172837,Tratamento de canal,Canal dente 21,,Dra. Ana Clara,2025-05-15T09:25:00,1,atencao
-112,Iara Campos,69717273848,Aplicação de flúor,Verniz neutro,,Dra. Beatriz Luz,2025-05-28T10:40:00,0,normal
-113,Jonas Pires,70727374859,Profilaxia (limpeza),Profilaxia completa,,Dr. Pedro Lima,2025-06-02T09:15:00,0,normal
-114,Jonas Pires,70727374859,Restauração de resina,Restauração dente 12,,Dr. Pedro Lima,2025-06-10T11:00:00,0,normal
-115,Karina Dias,71737475860,Clareamento dental,Segunda sessão,,Dra. Beatriz Luz,2025-06-25T18:10:00,0,normal
-116,Lucas Antunes,72747576871,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-07-01T09:00:00,0,normal
-117,Lucas Antunes,72747576871,Tratamento de canal,Canal dente 36,,Dra. Ana Clara,2025-07-13T08:50:00,1,atencao
-118,Mariana Prado,73757677882,Cimentação de coroa/prótese,Cimentação coroa 17,,Dr. Pedro Lima,2025-07-20T10:30:00,0,normal
-119,Nelson Diniz,74767778893,Controle de retorno,Assintomático,,Dra. Beatriz Luz,2025-08-04T14:15:00,0,normal
-120,Olga Farias,75777879904,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-08-09T09:30:00,0,normal
-121,Olga Farias,75777879904,Tratamento de canal,Canal dente 11,,Dra. Ana Clara,2025-08-21T10:10:00,1,atencao
-122,Paulo Araujo,76787980915,Raspagem supragengival,Raspagem moderada,Enxágue clorexidina,Dr. Pedro Lima,2025-08-29T15:10:00,0,normal
-123,Quezia Lopes,77798081926,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-09-05T10:00:00,0,normal
-124,Ricardo Luna,78798182937,Profilaxia (limpeza),Profilaxia e polimento,,Dra. Ana Clara,2025-09-10T09:00:00,0,normal
-125,Ricardo Luna,78798182937,Tratamento de canal,Canal dente 23,,Dra. Ana Clara,2025-09-22T09:40:00,1,atencao
-126,Sara Queiroz,79708283948,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-09-28T18:30:00,0,normal
-127,Tiago Martins,80718384959,Profilaxia (limpeza),Profilaxia simples,,Dra. Beatriz Luz,2025-10-03T08:45:00,0,normal
-128,Tiago Martins,80718384959,Tratamento de canal,Canal dente 32,,Dra. Beatriz Luz,2025-10-13T09:35:00,1,atencao
-129,Úrsula Ramos,81728485960,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-24T11:15:00,0,normal
-130,Valter Pinho,82738586971,Retirada de pontos,Pós-operatório,,Dra. Ana Clara,2025-11-02T16:25:00,0,normal
-131,Wagner Teles,83748687982,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-11-06T09:00:00,0,normal
-132,Wagner Teles,83748687982,Tratamento de canal,Canal dente 41,,Dra. Ana Clara,2025-11-18T10:05:00,1,atencao
-133,Xuxa Mendes,84758788993,Controle de retorno,Sem dor,,Dr. Pedro Lima,2025-11-28T14:40:00,0,normal
-134,Yago Furtado,85768890004,Restauração de resina,Restauração dente 33,,Dra. Beatriz Luz,2025-12-05T12:00:00,0,normal
-135,Zaira Melo,86778991015,Clareamento dental,Segunda sessão,,Dr. Pedro Lima,2025-12-16T18:10:00,0,normal
-136,Adriana Neri,87789092026,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2024-01-08T09:00:00,0,normal
-137,Adriana Neri,87789092026,Tratamento de canal,Canal dente 24,,Dra. Ana Clara,2024-01-19T10:00:00,1,atencao
-138,Breno Couto,88799193037,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2024-02-10T10:15:00,0,normal
-139,Camila Seixas,89809294048,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2024-02-20T11:10:00,0,normal
-140,Diego Ramos,90819395059,Controle de retorno,Revisão,,Dra. Ana Clara,2024-03-03T14:00:00,0,normal
-141,Diego Ramos,90819395059,Restauração de resina,Restauração dente 15,,Dra. Ana Clara,2024-03-12T09:20:00,0,normal
-142,Eliana Paz,91829496060,Profilaxia (limpeza),Profilaxia,,Dr. Pedro Lima,2024-04-06T09:10:00,0,normal
-143,Eliana Paz,91829496060,Tratamento de canal,Canal dente 22,,Dr. Pedro Lima,2024-04-18T10:05:00,1,atencao
-144,Fabiana Luz,92839597071,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2024-04-27T16:30:00,0,normal
-145,Guilherme Araujo,93849698082,Clareamento dental,Primeira sessão,,Dra. Ana Clara,2024-05-05T18:00:00,0,normal
-146,Heloisa Teves,94859799093,Profilaxia (limpeza),Profilaxia e polimento,,Dr. Pedro Lima,2024-05-09T08:40:00,0,normal
-147,Heloisa Teves,94859799093,Tratamento de canal,Canal dente 31,,Dr. Pedro Lima,2024-05-21T10:00:00,1,atencao
-148,Igor Santos,95869800104,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2024-06-02T11:30:00,0,normal
-149,Janaina Lobo,96879901115,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2024-06-07T09:00:00,0,normal
-150,Janaina Lobo,96879901115,Tratamento de canal,Canal dente 18,,Dra. Ana Clara,2024-06-19T09:30:00,1,atencao
-151,Keila Brum,97880002126,Controle de retorno,Sem alterações,,Dr. Pedro Lima,2024-07-01T14:10:00,0,normal
-152,Leandro Paes,98890103137,Restauração de resina,Restauração dente 27,,Dra. Beatriz Luz,2024-07-10T12:00:00,0,normal
-153,Marcela Diniz,99900204148,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2024-07-23T08:50:00,0,normal
-154,Marcela Diniz,99900204148,Tratamento de canal,Canal dente 42,,Dra. Ana Clara,2024-08-01T10:05:00,1,atencao
-155,Natan Alves,100010305158,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2024-08-12T11:25:00,0,normal
-156,Olivia Meireles,100110406169,Clareamento dental,Segunda sessão,,Dra. Beatriz Luz,2024-08-24T18:20:00,0,normal
-157,Pedro Queiroz,100210507170,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2024-09-02T09:20:00,0,normal
-158,Pedro Queiroz,100210507170,Tratamento de canal,Canal dente 25,,Dra. Ana Clara,2024-09-13T10:15:00,1,atencao
-159,Queiroga Lima,100310608181,Controle de retorno,Assintomático,,Dr. Pedro Lima,2024-09-28T16:00:00,0,normal
-160,Rafaela Prado,100410709192,Restauração de resina,Restauração dente 13,,Dra. Beatriz Luz,2024-10-03T11:40:00,0,normal
-161,Sandro Neri,100510810203,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2024-10-07T08:35:00,0,normal
-162,Sandro Neri,100510810203,Tratamento de canal,Canal dente 17,,Dra. Ana Clara,2024-10-18T09:45:00,1,atencao
-163,Tamara Silva,100610911214,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2024-11-04T10:30:00,0,normal
-164,Ulisses Rios,100711012225,Profilaxia (limpeza),Profilaxia completa,,Dra. Beatriz Luz,2024-11-08T09:00:00,0,normal
-165,Ulisses Rios,100711012225,Tratamento de canal,Canal dente 29,,Dra. Beatriz Luz,2024-11-20T10:00:00,1,atencao
-166,Vitória Lins,100811113236,Retirada de pontos,Pós-operatório,,Dra. Ana Clara,2024-12-01T16:10:00,0,normal
-167,Wellington Paz,100911214247,Profilaxia (limpeza),Profilaxia,,Dr. Pedro Lima,2024-12-05T08:45:00,0,normal
-168,Wellington Paz,100911214247,Tratamento de canal,Canal dente 12,,Dr. Pedro Lima,2024-12-16T09:20:00,1,atencao
-169,Xavier Dantas,101011315258,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2026-01-09T10:05:00,0,normal
-170,Yanca Moraes,101111416269,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2026-01-14T09:10:00,0,normal
-171,Yanca Moraes,101111416269,Tratamento de canal,Canal dente 14,,Dra. Ana Clara,2026-01-26T10:00:00,1,atencao
-172,Zack Gomes,101211517270,Controle de retorno,Sem queixas,,Dr. Pedro Lima,2026-02-02T14:40:00,0,normal
-173,Aída Torres,101311618281,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2026-02-12T15:30:00,0,normal
-174,Baltazar Luz,101411719292,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2026-02-20T18:15:00,0,normal
-175,Carine Prado,101511820303,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2026-03-03T09:00:00,0,normal
-176,Carine Prado,101511820303,Tratamento de canal,Canal dente 33,,Dra. Ana Clara,2026-03-15T09:30:00,1,atencao
-177,Denis Rocha,101611921314,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2026-03-28T11:40:00,0,normal
-178,Evelin Costa,101712022325,Profilaxia (limpeza),Profilaxia e polimento,,Dra. Beatriz Luz,2026-04-04T08:40:00,0,normal
-179,Evelin Costa,101712022325,Tratamento de canal,Canal dente 45,,Dra. Beatriz Luz,2026-04-16T09:35:00,1,atencao
-180,Felipe Prado,101812123336,Retirada de pontos,Pós-operatório,,Dr. Pedro Lima,2026-04-29T16:20:00,0,normal
-181,Giovana Neri,101912224347,Clareamento dental,Segunda sessão,,Dra. Ana Clara,2026-05-07T18:05:00,0,normal
-182,Heitor Lopes,102012325358,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2026-05-12T09:00:00,0,normal
-183,Heitor Lopes,102012325358,Tratamento de canal,Canal dente 16,,Dra. Ana Clara,2026-05-23T10:00:00,1,atencao
-184,Ingrid Fagundes,102112426369,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2026-06-03T11:20:00,0,normal
-185,Jonatas Lemos,102212527370,Profilaxia (limpeza),Profilaxia completa,,Dra. Beatriz Luz,2026-06-08T09:15:00,0,normal
-186,Jonatas Lemos,102212527370,Tratamento de canal,Canal dente 22,,Dra. Beatriz Luz,2026-06-20T10:05:00,1,atencao
-187,Kellen Rocha,102312628381,Controle de retorno,Assintomática,,Dra. Ana Clara,2026-07-04T14:50:00,0,normal
-188,Levi Cunha,102412729392,Restauração de resina,Restauração dente 24,,Dr. Pedro Lima,2026-07-15T12:10:00,0,normal
-189,Monica Alves,102512830303,Profilaxia (limpeza),Profilaxia simples,,Dra. Beatriz Luz,2026-07-28T08:55:00,0,normal
-190,Monica Alves,102512830303,Tratamento de canal,Canal dente 31,,Dra. Beatriz Luz,2026-08-09T09:30:00,1,atencao
-191,Nicolas Braga,102612931314,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2026-08-18T10:45:00,0,normal
-192,Otavio Reis,102713032325,Clareamento dental,Primeira sessão,,Dra. Ana Clara,2026-08-29T18:25:00,0,normal
-193,Priscila Melo,102813133336,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2026-09-06T09:00:00,0,normal
-194,Priscila Melo,102813133336,Tratamento de canal,Canal dente 28,,Dra. Ana Clara,2026-09-18T10:05:00,1,atencao
-195,Quésia Prado,102913234347,Controle de retorno,Sem alterações,,Dr. Pedro Lima,2026-09-30T14:35:00,0,normal
-196,Renan Freire,103013335358,Raspagem supragengival,Raspagem moderada,Enxágue clorexidina,Dra. Beatriz Luz,2026-10-04T15:15:00,0,normal
-197,Sabrina Luz,103113436369,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2026-10-10T08:50:00,0,normal
-198,Sabrina Luz,103113436369,Tratamento de canal,Canal dente 13,,Dra. Ana Clara,2026-10-21T09:30:00,1,atencao
-199,Thales Porto,103213537370,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2026-11-03T11:10:00,0,normal
-200,Ursula Prado,103313638381,Restauração de resina,Restauração dente 35,,Dra. Beatriz Luz,2026-11-15T12:25:00,0,normal
+id,paciente_nome,cpf,procedimento,executado,prescricao,dentista,created_at,fraude,status,motivo_atencao,suspicious,attention_reason,motivos
+169,Xavier Dantas,101011315258,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2023-01-09 10:05:00,0,normal,,False,,
+170,Yanca Moraes,101111416269,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2023-01-14 09:10:00,0,atencao,,True,Profilaxia em 2023-01-14 → Canal em 2023-01-26 (≤ 15 dias),
+171,Yanca Moraes,101111416269,Tratamento de canal,Canal dente 14,,Dra. Ana Clara,2023-01-26 10:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+172,Zack Gomes,101211517270,Controle de retorno,Sem queixas,,Dr. Pedro Lima,2023-02-02 14:40:00,0,normal,,False,,
+173,Aída Torres,101311618281,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2023-02-12 15:30:00,0,normal,,False,,
+174,Baltazar Luz,101411719292,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2023-02-20 18:15:00,0,normal,,False,,
+175,Carine Prado,101511820303,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2023-03-03 09:00:00,0,atencao,,True,Profilaxia em 2023-03-03 → Canal em 2023-03-15 (≤ 15 dias),
+176,Carine Prado,101511820303,Tratamento de canal,Canal dente 33,,Dra. Ana Clara,2023-03-15 09:30:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+177,Denis Rocha,101611921314,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2023-03-28 11:40:00,0,normal,,False,,
+178,Evelin Costa,101712022325,Profilaxia (limpeza),Profilaxia e polimento,,Dra. Beatriz Luz,2023-04-04 08:40:00,0,atencao,,True,Profilaxia em 2023-04-04 → Canal em 2023-04-16 (≤ 15 dias),
+179,Evelin Costa,101712022325,Tratamento de canal,Canal dente 45,,Dra. Beatriz Luz,2023-04-16 09:35:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+180,Felipe Prado,101812123336,Retirada de pontos,Pós-operatório,,Dr. Pedro Lima,2023-04-29 16:20:00,0,normal,,False,,
+181,Giovana Neri,101912224347,Clareamento dental,Segunda sessão,,Dra. Ana Clara,2023-05-07 18:05:00,0,normal,,False,,
+182,Heitor Lopes,102012325358,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2023-05-12 09:00:00,0,atencao,,True,Profilaxia em 2023-05-12 → Canal em 2023-05-23 (≤ 15 dias),
+183,Heitor Lopes,102012325358,Tratamento de canal,Canal dente 16,,Dra. Ana Clara,2023-05-23 10:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+184,Ingrid Fagundes,102112426369,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2023-06-03 11:20:00,0,normal,,False,,
+185,Jonatas Lemos,102212527370,Profilaxia (limpeza),Profilaxia completa,,Dra. Beatriz Luz,2023-06-08 09:15:00,0,atencao,,True,Profilaxia em 2023-06-08 → Canal em 2023-06-20 (≤ 15 dias),
+186,Jonatas Lemos,102212527370,Tratamento de canal,Canal dente 22,,Dra. Beatriz Luz,2023-06-20 10:05:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+187,Kellen Rocha,102312628381,Controle de retorno,Assintomática,,Dra. Ana Clara,2023-07-04 14:50:00,0,normal,,False,,
+188,Levi Cunha,102412729392,Restauração de resina,Restauração dente 24,,Dr. Pedro Lima,2023-07-15 12:10:00,0,normal,,False,,
+189,Monica Alves,102512830303,Profilaxia (limpeza),Profilaxia simples,,Dra. Beatriz Luz,2023-07-28 08:55:00,0,atencao,,True,Profilaxia em 2023-07-28 → Canal em 2023-08-09 (≤ 15 dias),
+190,Monica Alves,102512830303,Tratamento de canal,Canal dente 31,,Dra. Beatriz Luz,2023-08-09 09:30:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+191,Nicolas Braga,102612931314,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2023-08-18 10:45:00,0,normal,,False,,
+192,Otavio Reis,102713032325,Clareamento dental,Primeira sessão,,Dra. Ana Clara,2023-08-29 18:25:00,0,normal,,False,,
+193,Priscila Melo,102813133336,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2023-09-06 09:00:00,0,atencao,,True,Profilaxia em 2023-09-06 → Canal em 2023-09-18 (≤ 15 dias),
+194,Priscila Melo,102813133336,Tratamento de canal,Canal dente 28,,Dra. Ana Clara,2023-09-18 10:05:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+195,Quésia Prado,102913234347,Controle de retorno,Sem alterações,,Dr. Pedro Lima,2023-09-30 14:35:00,0,normal,,False,,
+196,Renan Freire,103013335358,Raspagem supragengival,Raspagem moderada,Enxágue clorexidina,Dra. Beatriz Luz,2023-10-04 15:15:00,0,normal,,False,,
+197,Sabrina Luz,103113436369,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2023-10-10 08:50:00,0,atencao,,True,Profilaxia em 2023-10-10 → Canal em 2023-10-21 (≤ 15 dias),
+198,Sabrina Luz,103113436369,Tratamento de canal,Canal dente 13,,Dra. Ana Clara,2023-10-21 09:30:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+199,Thales Porto,103213537370,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2023-11-03 11:10:00,0,normal,,False,,
+200,Ursula Prado,103313638381,Restauração de resina,Restauração dente 35,,Dra. Beatriz Luz,2023-11-15 12:25:00,0,normal,,False,,
+136,Adriana Neri,87789092023,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2024-01-08 09:00:00,0,atencao,,True,Profilaxia em 2024-01-08 → Canal em 2024-01-19 (≤ 15 dias),
+137,Adriana Neri,87789092023,Tratamento de canal,Canal dente 24,,Dra. Ana Clara,2024-01-19 10:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+138,Breno Couto,88799193037,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2024-02-10 10:15:00,0,normal,,False,,
+139,Camila Seixas,89809294048,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2024-02-20 11:10:00,0,normal,,False,,
+140,Diego Ramos,90819395059,Controle de retorno,Revisão,,Dra. Ana Clara,2024-03-03 14:00:00,0,normal,,False,,
+141,Diego Ramos,90819395059,Restauração de resina,Restauração dente 15,,Dra. Ana Clara,2024-03-12 09:20:00,0,normal,,False,,
+142,Eliana Paz,91829496060,Profilaxia (limpeza),Profilaxia,,Dr. Pedro Lima,2024-04-06 09:10:00,0,atencao,,True,Profilaxia em 2024-04-06 → Canal em 2024-04-18 (≤ 15 dias),
+143,Eliana Paz,91829496060,Tratamento de canal,Canal dente 22,,Dr. Pedro Lima,2024-04-18 10:05:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+144,Fabiana Luz,92839597071,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2024-04-27 16:30:00,0,normal,,False,,
+145,Guilherme Araujo,93849698082,Clareamento dental,Primeira sessão,,Dra. Ana Clara,2024-05-05 18:00:00,0,normal,,False,,
+146,Heloisa Teves,94859799093,Profilaxia (limpeza),Profilaxia e polimento,,Dr. Pedro Lima,2024-05-09 08:40:00,0,atencao,,True,Profilaxia em 2024-05-09 → Canal em 2024-05-21 (≤ 15 dias),
+147,Heloisa Teves,94859799093,Tratamento de canal,Canal dente 31,,Dr. Pedro Lima,2024-05-21 10:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+148,Igor Santos,95869800104,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2024-06-02 11:30:00,0,normal,,False,,
+149,Janaina Lobo,96879901115,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2024-06-07 09:00:00,0,atencao,,True,Profilaxia em 2024-06-07 → Canal em 2024-06-19 (≤ 15 dias),
+150,Janaina Lobo,96879901115,Tratamento de canal,Canal dente 18,,Dra. Ana Clara,2024-06-19 09:30:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+151,Keila Brum,97880002126,Controle de retorno,Sem alterações,,Dr. Pedro Lima,2024-07-01 14:10:00,0,normal,,False,,
+152,Leandro Paes,98890103137,Restauração de resina,Restauração dente 27,,Dra. Beatriz Luz,2024-07-10 12:00:00,0,normal,,False,,
+153,Marcela Diniz,99900204148,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2024-07-23 08:50:00,0,atencao,,True,Profilaxia em 2024-07-23 → Canal em 2024-08-01 (≤ 15 dias),
+154,Marcela Diniz,99900204148,Tratamento de canal,Canal dente 42,,Dra. Ana Clara,2024-08-01 10:05:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+155,Natan Alves,100010305158,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2024-08-12 11:25:00,0,normal,,False,,
+156,Olivia Meireles,100110406169,Clareamento dental,Segunda sessão,,Dra. Beatriz Luz,2024-08-24 18:20:00,0,normal,,False,,
+157,Pedro Queiroz,100210507170,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2024-09-02 09:20:00,0,atencao,,True,Profilaxia em 2024-09-02 → Canal em 2024-09-13 (≤ 15 dias),
+158,Pedro Queiroz,100210507170,Tratamento de canal,Canal dente 25,,Dra. Ana Clara,2024-09-13 10:15:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+159,Queiroga Lima,100310608181,Controle de retorno,Assintomático,,Dr. Pedro Lima,2024-09-28 16:00:00,0,normal,,False,,
+160,Rafaela Prado,100410709192,Restauração de resina,Restauração dente 13,,Dra. Beatriz Luz,2024-10-03 11:40:00,0,normal,,False,,
+161,Sandro Neri,100510810203,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2024-10-07 08:35:00,0,atencao,,True,Profilaxia em 2024-10-07 → Canal em 2024-10-18 (≤ 15 dias),
+162,Sandro Neri,100510810203,Tratamento de canal,Canal dente 17,,Dra. Ana Clara,2024-10-18 09:45:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+163,Tamara Silva,100610911214,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2024-11-04 10:30:00,0,normal,,False,,
+164,Ulisses Rios,100711012225,Profilaxia (limpeza),Profilaxia completa,,Dra. Beatriz Luz,2024-11-08 09:00:00,0,atencao,,True,Profilaxia em 2024-11-08 → Canal em 2024-11-20 (≤ 15 dias),
+165,Ulisses Rios,100711012225,Tratamento de canal,Canal dente 29,,Dra. Beatriz Luz,2024-11-20 10:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+166,Vitória Lins,100811113236,Retirada de pontos,Pós-operatório,,Dra. Ana Clara,2024-12-01 16:10:00,0,normal,,False,,
+167,Wellington Paz,100911214247,Profilaxia (limpeza),Profilaxia,,Dr. Pedro Lima,2024-12-05 08:45:00,0,atencao,,True,Profilaxia em 2024-12-05 → Canal em 2024-12-16 (≤ 15 dias),
+168,Wellington Paz,100911214247,Tratamento de canal,Canal dente 12,,Dr. Pedro Lima,2024-12-16 09:20:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+101,André Matos,61626465760,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-01-07 09:30:00,0,atencao,,True,Profilaxia em 2025-01-07 → Canal em 2025-01-18 (≤ 15 dias),
+102,André Matos,61626465760,Tratamento de canal,Canal dente 16,,Dra. Ana Clara,2025-01-18 10:20:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+103,Bianca Torres,62636566771,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-02-11 11:05:00,0,normal,,False,,
+104,Caio Prado,63646667782,Restauração de resina,Restauração dente 14,,Dra. Beatriz Luz,2025-02-22 14:45:00,0,normal,,False,,
+105,Daniel Souza,64656768793,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2025-03-01 09:00:00,0,atencao,,True,Profilaxia em 2025-03-01 → Canal em 2025-03-12 (≤ 15 dias),
+106,Daniel Souza,64656768793,Tratamento de canal,Canal dente 26,,Dra. Ana Clara,2025-03-12 10:10:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+107,Elisa Moura,65676869804,Controle de retorno,Sem queixas,,Dr. Pedro Lima,2025-03-20 16:40:00,0,normal,,False,,
+108,Fernando Reis,66686970815,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2025-04-05 15:10:00,0,normal,,False,,
+109,Gisele Neri,67697071826,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-04-16 18:20:00,0,normal,,False,,
+110,Henrique Costa,68707172837,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-05-03 08:30:00,0,atencao,,True,Profilaxia em 2025-05-03 → Canal em 2025-05-15 (≤ 15 dias),
+111,Henrique Costa,68707172837,Tratamento de canal,Canal dente 21,,Dra. Ana Clara,2025-05-15 09:25:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+112,Iara Campos,69717273848,Aplicação de flúor,Verniz neutro,,Dra. Beatriz Luz,2025-05-28 10:40:00,0,normal,,False,,
+113,Jonas Pires,70727374859,Profilaxia (limpeza),Profilaxia completa,,Dr. Pedro Lima,2025-06-02 09:15:00,0,normal,,False,,
+114,Jonas Pires,70727374859,Restauração de resina,Restauração dente 12,,Dr. Pedro Lima,2025-06-10 11:00:00,0,normal,,False,,
+115,Karina Dias,71737475860,Clareamento dental,Segunda sessão,,Dra. Beatriz Luz,2025-06-25 18:10:00,0,normal,,False,,
+116,Lucas Antunes,72747576871,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-07-01 09:00:00,0,atencao,,True,Profilaxia em 2025-07-01 → Canal em 2025-07-13 (≤ 15 dias),
+117,Lucas Antunes,72747576871,Tratamento de canal,Canal dente 36,,Dra. Ana Clara,2025-07-13 08:50:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+118,Mariana Prado,73757677882,Cimentação de coroa/prótese,Cimentação coroa 17,,Dr. Pedro Lima,2025-07-20 10:30:00,0,normal,,False,,
+119,Nelson Diniz,74767778893,Controle de retorno,Assintomático,,Dra. Beatriz Luz,2025-08-04 14:15:00,0,normal,,False,,
+120,Olga Farias,75777879904,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-08-09 09:30:00,0,atencao,,True,Profilaxia em 2025-08-09 → Canal em 2025-08-21 (≤ 15 dias),
+121,Olga Farias,75777879904,Tratamento de canal,Canal dente 11,,Dra. Ana Clara,2025-08-21 10:10:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+7,Ana Ribeiro,22334455667,Extração dentária,Extração dente 18,Ibuprofeno 400mg,Dra. Ana Clara,2025-08-28 16:10:00,0,normal,,False,,
+122,Paulo Araujo,76787980915,Raspagem supragengival,Raspagem moderada,Enxágue clorexidina,Dr. Pedro Lima,2025-08-29 15:10:00,0,normal,,False,,
+28,Paulo Nunes,55667788990,Profilaxia (limpeza),Profilaxia e polimento,,Dra. Ana Clara,2025-09-01 08:45:00,0,atencao,,True,3 atendimentos em ≤ 14 dias,
+1,João Silva,12345678901,Profilaxia (limpeza),Profilaxia completa; boca saudável,Enxágue bucal 2x/dia,Dra. Ana Clara,2025-09-01 09:10:00,0,atencao,,True,Profilaxia em 2025-09-01 → Canal em 2025-09-12 (≤ 15 dias),
+65,Beatriz Salles,34353637483,Profilaxia (limpeza),Profilaxia preventiva,,Dra. Ana Clara,2025-09-01 09:30:00,0,normal,,False,,
+48,Olívia Cunha,22232425361,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-02 09:10:00,0,atencao,,True,Profilaxia em 2025-09-02 → Canal em 2025-09-14 (≤ 15 dias),
+3,Maria Souza,98765432100,Profilaxia (limpeza),Profilaxia com orientação,,Dr. Pedro Lima,2025-09-02 14:20:00,0,normal,,False,,
+95,Zélia Ramos,57596061716,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2025-09-03 08:40:00,0,atencao,,True,Profilaxia em 2025-09-03 → Canal em 2025-09-14 (≤ 15 dias),
+72,Henrique Vidal,40424344549,Profilaxia (limpeza),Profilaxia,,Dra. Ana Clara,2025-09-03 08:50:00,0,atencao,,True,Profilaxia em 2025-09-03 → Canal em 2025-09-13 (≤ 15 dias),
+9,Laura Martins,44556677889,Profilaxia (limpeza),Profilaxia básica,,Dra. Beatriz Luz,2025-09-03 09:00:00,0,normal,,False,,
+55,Tadeu Ramos,27282930416,Profilaxia (limpeza),Profilaxia completa,,Dra. Beatriz Luz,2025-09-03 11:25:00,0,atencao,,True,Profilaxia em 2025-09-03 → Canal em 2025-09-16 (≤ 15 dias),
+84,Renata Prado,49515253638,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2025-09-04 09:30:00,0,atencao,,True,Profilaxia em 2025-09-04 → Canal em 2025-09-18 (≤ 15 dias),
+14,Renato Dias,77889900112,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2025-09-04 15:05:00,0,normal,,False,,
+123,Quezia Lopes,77798081926,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-09-05 10:00:00,0,normal,,False,,
+76,Kevin Duarte,43454647572,Profilaxia (limpeza),Higienização e polimento,,Dra. Ana Clara,2025-09-05 10:20:00,0,atencao,,True,Profilaxia em 2025-09-05 → Canal em 2025-09-17 (≤ 15 dias),
+51,Queila Azevedo,24252627383,Profilaxia (limpeza),Profilaxia com jato,,Dra. Beatriz Luz,2025-09-05 10:40:00,0,atencao,,True,Profilaxia em 2025-09-05 → Canal em 2025-09-17 (≤ 15 dias),
+5,Carlos Braga,10293847566,Profilaxia (limpeza),Higienização e polimento,,Dra. Beatriz Luz,2025-09-05 11:00:00,0,atencao,,True,Profilaxia em 2025-09-05 → Canal em 2025-09-18 (≤ 15 dias),
+62,Yasmin Rocha,32333435461,Profilaxia (limpeza),Profilaxia com jato,,Dr. Pedro Lima,2025-09-06 08:30:00,0,atencao,,True,Profilaxia em 2025-09-06 → Canal em 2025-09-18 (≤ 15 dias),
+37,Aline Barros,13141516172,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Ana Clara,2025-09-06 09:10:00,0,atencao,,True,Profilaxia em 2025-09-06 → Canal em 2025-09-18 (≤ 15 dias),
+87,Thais Bueno,51535455650,Profilaxia (limpeza),Profilaxia completa,,Dra. Beatriz Luz,2025-09-06 10:00:00,0,atencao,,True,Profilaxia em 2025-09-06 → Canal em 2025-09-19 (≤ 15 dias),
+15,Sofia Alves,88990011223,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-09-06 10:30:00,0,atencao,,True,Profilaxia em 2025-09-06 → Canal em 2025-09-19 (≤ 15 dias),
+68,Elisa Campos,37383940516,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-07 09:05:00,0,atencao,,True,Profilaxia em 2025-09-07 → Canal em 2025-09-19 (≤ 15 dias),
+54,Sabrina Paes,26272829405,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-09-07 09:55:00,0,normal,,False,,
+99,Debora Lima,60626364749,Profilaxia (limpeza),Profilaxia simples,,Dra. Beatriz Luz,2025-09-07 10:05:00,0,atencao,,True,Profilaxia em 2025-09-07 → Canal em 2025-09-18 (≤ 15 dias),
+8,Felipe Santos,33445566778,Tratamento de canal,Canal dente 21,,Dr. Pedro Lima,2025-09-07 10:50:00,0,normal,,False,,
+91,William Souza,54565758683,Profilaxia (limpeza),Profilaxia com jato,,Dra. Beatriz Luz,2025-09-08 09:20:00,0,atencao,,True,Profilaxia em 2025-09-08 → Canal em 2025-09-20 (≤ 15 dias),
+18,Carla Pires,10111213141,Cimentação de coroa/prótese,Cimentação coroa 15,,Dra. Beatriz Luz,2025-09-08 09:25:00,0,normal,,False,,
+41,Ivan Rocha,16171819305,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-09-08 14:00:00,0,atencao,,True,Profilaxia em 2025-09-08 → Canal em 2025-09-22 (≤ 15 dias),
+59,Wesley Amorim,30313233449,Profilaxia (limpeza),Profilaxia e orientação,,Dra. Beatriz Luz,2025-09-09 10:15:00,0,atencao,,True,Profilaxia em 2025-09-09 → Canal em 2025-09-22 (≤ 15 dias),
+11,Paulo Nunes,55667788990,Restauração de resina,Restauração dente 14,,Dra. Ana Clara,2025-09-09 13:00:00,0,normal,,False,,
+80,Nathalia Cruz,46484950605,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-10 09:00:00,0,atencao,,True,Profilaxia em 2025-09-10 → Canal em 2025-09-23 (≤ 15 dias),
+124,Ricardo Luna,78798182937,Profilaxia (limpeza),Profilaxia e polimento,,Dra. Ana Clara,2025-09-10 09:00:00,0,atencao,,True,Profilaxia em 2025-09-10 → Canal em 2025-09-22 (≤ 15 dias),
+12,Bruna Lopes,66778899001,Profilaxia (limpeza),Profilaxia e orientação,,Dr. Pedro Lima,2025-09-10 17:40:00,0,atencao,,True,Profilaxia em 2025-09-10 → Canal em 2025-09-24 (≤ 15 dias),
+45,Larissa Freitas,19202122338,Profilaxia (limpeza),Higienização e orientação,,Dra. Ana Clara,2025-09-11 11:50:00,0,normal,,False,,
+17,Marcos Melo,99001122334,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-09-11 18:00:00,0,normal,,False,,
+31,Renato Dias,77889900112,Profilaxia (limpeza),Profilaxia com jato de bicarbonato,,Dra. Beatriz Luz,2025-09-12 08:30:00,0,atencao,,True,Profilaxia em 2025-09-12 → Canal em 2025-09-23 (≤ 15 dias),
+2,João Silva,12345678901,Tratamento de canal,Canal dente 26,,Dra. Ana Clara,2025-09-12 10:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.; Anotação de 'boca saudável' seguida de canal/extração em até 15 dias.,False,,
+73,Henrique Vidal,40424344549,Tratamento de canal,Canal dente 41,,Dra. Ana Clara,2025-09-13 11:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+61,Xavier Lopes,31323334450,Aplicação de flúor,Verniz aplicado,,Dra. Ana Clara,2025-09-13 13:05:00,0,normal,,False,,
+39,Gustavo Prado,14151617283,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-09-13 15:45:00,0,normal,,False,,
+29,Paulo Nunes,55667788990,Tratamento de canal,Canal dente 25,,Dra. Ana Clara,2025-09-14 09:20:00,1,atencao,,False,,
+96,Zélia Ramos,57596061716,Tratamento de canal,Canal dente 32,,Dra. Beatriz Luz,2025-09-14 12:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+49,Olívia Cunha,22232425361,Tratamento de canal,Canal dente 16,,Dra. Ana Clara,2025-09-14 13:25:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+24,Ana Ribeiro,22334455667,Profilaxia (limpeza),Profilaxia simples,,Dra. Ana Clara,2025-09-15 09:00:00,0,atencao,,True,Profilaxia em 2025-09-15 → Canal em 2025-09-27 (≤ 15 dias),
+56,Tadeu Ramos,27282930416,Tratamento de canal,Canal dente 44,,Dra. Beatriz Luz,2025-09-16 12:05:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+20,Diego Costa,12131415161,Tratamento de canal,Canal dente 11,,Dr. Pedro Lima,2025-09-16 16:55:00,0,normal,,False,,
+52,Queila Azevedo,24252627383,Tratamento de canal,Canal dente 33,,Dra. Beatriz Luz,2025-09-17 09:30:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+77,Kevin Duarte,43454647572,Tratamento de canal,Canal dente 34,,Dra. Ana Clara,2025-09-17 13:30:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+43,Julia Pacheco,17181920316,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dr. Pedro Lima,2025-09-17 16:30:00,0,normal,,False,,
+6,Carlos Braga,10293847566,Tratamento de canal,Canal dente 12,,Dra. Beatriz Luz,2025-09-18 08:40:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+85,Renata Prado,49515253638,Tratamento de canal,Canal dente 37,,Dra. Ana Clara,2025-09-18 08:50:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+63,Yasmin Rocha,32333435461,Tratamento de canal,Canal dente 14,,Dr. Pedro Lima,2025-09-18 10:00:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+38,Aline Barros,13141516172,Tratamento de canal,Canal dente 35,,Dra. Ana Clara,2025-09-18 10:10:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+100,Debora Lima,60626364749,Tratamento de canal,Canal dente 17,,Dra. Beatriz Luz,2025-09-18 13:10:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+88,Thais Bueno,51535455650,Tratamento de canal,Canal dente 45,,Dra. Beatriz Luz,2025-09-19 11:45:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+69,Elisa Campos,37383940516,Tratamento de canal,Canal dente 22,,Dra. Ana Clara,2025-09-19 12:10:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+16,Sofia Alves,88990011223,Tratamento de canal,Canal dente 24,,Dra. Ana Clara,2025-09-19 12:45:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+40,Helena Moraes,15161718294,Restauração de resina,Restauração dente 12,,Dra. Beatriz Luz,2025-09-20 09:20:00,0,normal,,False,,
+10,Laura Martins,44556677889,Aplicação de flúor,Aplicado verniz de flúor,,Dra. Beatriz Luz,2025-09-20 09:20:00,0,normal,,False,,
+92,William Souza,54565758683,Tratamento de canal,Canal dente 28,,Dra. Beatriz Luz,2025-09-20 10:30:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+64,Zeca Moura,33343536472,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Beatriz Luz,2025-09-20 15:10:00,0,normal,,False,,
+79,Monique Paz,45474849594,Raspagem supragengival,Raspagem moderada,Enxágue clorexidina,Dra. Beatriz Luz,2025-09-21 14:30:00,0,normal,,False,,
+26,Felipe Santos,33445566778,Raspagem supragengival,Raspagem moderada,Enxágue clorexidina,Dr. Pedro Lima,2025-09-21 15:25:00,0,normal,,False,,
+42,Ivan Rocha,16171819305,Tratamento de canal,Canal dente 27,,Dra. Ana Clara,2025-09-22 09:40:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+125,Ricardo Luna,78798182937,Tratamento de canal,Canal dente 23,,Dra. Ana Clara,2025-09-22 09:40:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+60,Wesley Amorim,30313233449,Tratamento de canal,Canal dente 31,,Dra. Beatriz Luz,2025-09-22 09:50:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+94,Yuri Cardozo,56585960705,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-09-22 18:10:00,0,normal,,False,,
+32,Renato Dias,77889900112,Tratamento de canal,Canal dente 13,,Dra. Beatriz Luz,2025-09-23 09:15:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+81,Nathalia Cruz,46484950605,Tratamento de canal,Canal dente 18,,Dra. Ana Clara,2025-09-23 10:15:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+71,Gabriela Fontes,39414243538,Clareamento dental,Primeira sessão,,Dra. Beatriz Luz,2025-09-23 18:00:00,0,normal,,False,,
+13,Bruna Lopes,66778899001,Tratamento de canal,Canal dente 46,,Dr. Pedro Lima,2025-09-24 08:15:00,0,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+97,Bruno Sales,58606162727,Raspagem supragengival,Raspagem leve,Enxágue clorexidina,Dra. Ana Clara,2025-09-24 15:20:00,0,normal,,False,,
+34,Marcos Melo,99001122334,Profilaxia (limpeza),Profilaxia leve,,Dr. Pedro Lima,2025-09-25 10:00:00,0,normal,,False,,
+46,Mariana Teixeira,20212223349,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-09-26 18:10:00,0,normal,,False,,
+25,Ana Ribeiro,22334455667,Tratamento de canal,Canal dente 47,,Dra. Ana Clara,2025-09-27 11:10:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+66,Caio Dantas,35363738494,Restauração de resina,Restauração dente 36,,Dr. Pedro Lima,2025-09-27 11:40:00,0,normal,,False,,
+93,Ximena Prado,55575859694,Restauração de resina,Restauração dente 21,,Dra. Ana Clara,2025-09-27 16:00:00,0,normal,,False,,
+50,Paula Castro,23242526372,Restauração de resina,Restauração dente 23,,Dr. Pedro Lima,2025-09-28 12:35:00,0,normal,,False,,
+126,Sara Queiroz,79708283948,Clareamento dental,Primeira sessão,,Dr. Pedro Lima,2025-09-28 18:30:00,0,normal,,False,,
+86,Sergio Maia,50525354649,Restauração de resina,Restauração dente 11,,Dr. Pedro Lima,2025-09-29 12:10:00,0,normal,,False,,
+57,Úrsula Neves,28293031427,Restauração de resina,Restauração dente 45,,Dra. Ana Clara,2025-09-29 16:00:00,0,normal,,False,,
+35,Carla Pires,10111213141,Retirada de pontos,Pós-operatório,,Dra. Beatriz Luz,2025-09-29 16:20:00,0,normal,,False,,
+4,Maria Souza,98765432100,Tratamento de canal,Canal dente 36,,Dr. Pedro Lima,2025-09-30 15:30:00,0,normal,,False,,
+74,Isabela Neri,41434445550,Restauração de resina,Restauração dente 32,,Dr. Pedro Lima,2025-09-30 15:30:00,0,normal,,False,,
+67,Daniela Mourão,36373839505,Aplicação de flúor,Verniz pediátrico,,Dra. Beatriz Luz,2025-10-01 10:10:00,0,normal,,False,,
+22,Maria Souza,98765432100,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-01 10:30:00,0,normal,,False,,
+36,Diego Costa,12131415161,Restauração de resina,Restauração dente 22,,Dr. Pedro Lima,2025-10-01 11:30:00,0,normal,,False,,
+89,Ubirajara Luz,52545556661,Controle de retorno,Sem alterações,,Dra. Ana Clara,2025-10-01 14:40:00,0,normal,,False,,
+75,Joana Prado,42444546561,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-10-02 09:40:00,0,normal,,False,,
+27,Laura Martins,44556677889,Clareamento dental,Segunda sessão,,Dra. Beatriz Luz,2025-10-02 10:00:00,0,normal,,False,,
+53,Rafael Tavares,25262728394,Controle de retorno,Sem dor,,Dra. Ana Clara,2025-10-02 14:45:00,0,normal,,False,,
+44,Kaio Araujo,18192021327,Extração dentária,Extração dente 38,Analgésico SOS,Dra. Beatriz Luz,2025-10-03 08:15:00,0,normal,,False,,
+127,Tiago Martins,80718384959,Profilaxia (limpeza),Profilaxia simples,,Dra. Beatriz Luz,2025-10-03 08:45:00,0,atencao,,True,Profilaxia em 2025-10-03 → Canal em 2025-10-13 (≤ 15 dias),
+83,Priscila Nunes,48505152627,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-10-03 11:05:00,0,normal,,False,,
+23,Carlos Braga,10293847566,Controle de retorno,Sem queixas,,Dra. Beatriz Luz,2025-10-03 14:00:00,0,normal,,False,,
+33,Sofia Alves,88990011223,Controle de retorno,Assintomático,,Dra. Ana Clara,2025-10-04 13:30:00,0,normal,,False,,
+58,Vinicius Reis,29303132438,Clareamento dental,Segunda sessão,,Dr. Pedro Lima,2025-10-04 18:30:00,0,normal,,False,,
+21,João Silva,12345678901,Restauração de resina,Restauração dente 17,,Dra. Ana Clara,2025-10-05 09:10:00,0,normal,,False,,
+90,Vanessa Reis,53555657672,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-05 10:30:00,0,normal,,False,,
+70,Fabio Baroni,38404142527,Controle de retorno,Sem alterações,,Dr. Pedro Lima,2025-10-05 14:20:00,0,normal,,False,,
+47,Nicolas Prado,21222324350,Aplicação de flúor,Verniz aplicado,,Dra. Beatriz Luz,2025-10-06 10:05:00,0,normal,,False,,
+78,Luis Otávio,44464748583,Controle de retorno,Revisão sem dor,,Dr. Pedro Lima,2025-10-06 16:10:00,0,normal,,False,,
+30,Bruna Lopes,66778899001,Aplicação de flúor,Verniz neutro,,Dr. Pedro Lima,2025-10-08 12:00:00,0,normal,,False,,
+82,Otávio Leme,47495051616,Clareamento dental,Segunda sessão,,Dr. Pedro Lima,2025-10-08 18:20:00,0,normal,,False,,
+98,Camila Mota,59616263738,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-09 09:50:00,0,normal,,False,,
+19,Carla Pires,10111213141,Tratamento de canal,Canal dente 15,,Dra. Beatriz Luz,2025-10-10 10:05:00,0,normal,,False,,
+128,Tiago Martins,80718384959,Tratamento de canal,Canal dente 32,,Dra. Beatriz Luz,2025-10-13 09:35:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+129,Úrsula Ramos,81728485960,Aplicação de flúor,Verniz aplicado,,Dr. Pedro Lima,2025-10-24 11:15:00,0,normal,,False,,
+130,Valter Pinho,82738586971,Retirada de pontos,Pós-operatório,,Dra. Ana Clara,2025-11-02 16:25:00,0,normal,,False,,
+131,Wagner Teles,83748687982,Profilaxia (limpeza),Profilaxia completa,,Dra. Ana Clara,2025-11-06 09:00:00,0,atencao,,True,Profilaxia em 2025-11-06 → Canal em 2025-11-18 (≤ 15 dias),
+132,Wagner Teles,83748687982,Tratamento de canal,Canal dente 41,,Dra. Ana Clara,2025-11-18 10:05:00,1,atencao,Profilaxia seguida de tratamento de canal em até 15 dias.,False,,
+133,Xuxa Mendes,84758788993,Controle de retorno,Sem dor,,Dr. Pedro Lima,2025-11-28 14:40:00,0,normal,,False,,
+134,Yago Furtado,85768890004,Restauração de resina,Restauração dente 33,,Dra. Beatriz Luz,2025-12-05 12:00:00,0,normal,,False,,
+135,Zaira Melo,86778991015,Clareamento dental,Segunda sessão,,Dr. Pedro Lima,2025-12-16 18:10:00,0,normal,,False,,
+201,Cristiano,45935973820,Profilaxia (limpeza),tratamento tartaro,nada,Dentista,2025-09-30T17:34:21.613Z,0,normal,,,,Tártaro
