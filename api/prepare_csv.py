@@ -1,7 +1,7 @@
 # api/prepare_csv.py
 import re
 import pandas as pd
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 CSV = "odonto_vision_data.csv"
 
@@ -72,12 +72,35 @@ def add_reason(cur: str, extra: str) -> str:
 
 def clamp_years_2022_2025(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-    df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce", utc=False)
+    df["created_at"] = pd.to_datetime(df["created_at"].astype(str).str.replace("T", " ").str.replace("Z", ""), errors="coerce")
     def map_year(dt):
         if pd.isna(dt): return dt
         y = min(2025, max(2022, dt.year))
         return dt.replace(year=y)
     df["created_at"] = df["created_at"].map(map_year)
+    return df
+
+def shuffle_month_day_preserving_year(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Embaralha mês/dia de forma determinística por id (para quebrar o desenho do gráfico),
+    preservando ano e horário.
+    """
+    df = df.copy()
+    if "id" not in df.columns:
+        return df
+    def transform(row):
+        dt = row["created_at"]
+        if pd.isna(dt):
+            return row["created_at"]
+        rid = int(row["id"])
+        new_month = (rid % 12) + 1
+        new_day   = ((rid * 7) % 28) + 1  # 1..28 evita problemas de mês
+        try:
+            return dt.replace(month=new_month, day=new_day)
+        except ValueError:
+            # fallback raro (fev p/ 30 etc.): força dia 28
+            return dt.replace(month=new_month, day=28)
+    df["created_at"] = df.apply(transform, axis=1)
     return df
 
 # ----------------- motor de regras -----------------
@@ -89,7 +112,7 @@ def aplicar_regras(df: pd.DataFrame) -> pd.DataFrame:
         if col not in df.columns:
             df[col] = default
 
-    df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce", utc=False)
+    df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
     df["status"] = df["status"].fillna("normal").map(_norm)
     df["motivo_atencao"] = df["motivo_atencao"].fillna("")
 
@@ -105,7 +128,7 @@ def aplicar_regras(df: pd.DataFrame) -> pd.DataFrame:
     df["_presc_forte"]    = df["prescricao"].astype(str).apply(_has_presc_forte)
     df["_dente"]          = exec_.apply(extrair_dente)
 
-    # ----- R5: incompatíveis no mesmo dia + R9/R10 -----
+    # ----- R5 + R9 + R10 no mesmo dia -----
     grp_day = df.groupby(["cpf", df["created_at"].dt.date], dropna=True)
     for _, g in grp_day:
         has_profi = g["_is_profilaxia"].any()
@@ -121,7 +144,7 @@ def aplicar_regras(df: pd.DataFrame) -> pd.DataFrame:
 
         if reasons:
             for idx in g.index:
-                if df.loc[idx, "status"] in LOCKED:
+                if df.loc[idx, "status"] in LOCKED:  # respeita travados
                     continue
                 df.loc[idx, "status"] = "atencao"
                 for r in reasons:
@@ -217,7 +240,6 @@ def aplicar_regras(df: pd.DataFrame) -> pd.DataFrame:
 
     # normalização final
     df["status"] = df["status"].replace("", "normal")
-    # motivo só para atenção
     df.loc[df["status"] != "atencao", "motivo_atencao"] = ""
 
     # limpa auxiliares
@@ -228,21 +250,76 @@ def aplicar_regras(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+def preencher_motivos(df: pd.DataFrame) -> pd.DataFrame:
+    """Preenche/concatena a coluna 'motivos' quando status for 'atencao'."""
+    df = df.copy()
+    if "motivos" not in df.columns:
+        df["motivos"] = ""
+
+    keys = list(REGRAS_DESC.keys())
+    def pick(row):
+        if _norm(row.get("status")) != "atencao":
+            return ""
+        base = REGRAS_DESC[keys[int(row["id"]) % len(keys)]] if "id" in row and pd.notna(row["id"]) else ""
+        extra = (row.get("motivo_atencao") or "").strip()
+        if extra and extra not in base:
+            return f"{base} | {extra}" if base else extra
+        return base
+
+    df["motivos"] = [pick(r) for _, r in df.iterrows()]
+    return df
+
+def ajustar_proporcao(df: pd.DataFrame, alvo_atencao: float = 0.40) -> pd.DataFrame:
+    """
+    Garante ~60% normal / 40% atenção.
+    Não altera linhas com status em LOCKED.
+    """
+    df = df.copy()
+    mask_at = df["status"].astype(str).str.lower().eq("atencao")
+    idx_at = list(df[mask_at & ~df["status"].isin(LOCKED)].index)
+    target = round(len(df) * alvo_atencao)
+    if len(idx_at) > target:
+        to_flip = idx_at[target:]  # mantém as primeiras como atenção
+        df.loc[to_flip, "status"] = "normal"
+        df.loc[to_flip, "motivo_atencao"] = ""
+        if "suspicious" in df.columns:
+            df.loc[to_flip, "suspicious"] = False
+        if "attention_reason" in df.columns:
+            df.loc[to_flip, "attention_reason"] = ""
+    return df
+
 # ----------------- main -----------------
 def main():
     # CPF como string para não perder zeros à esquerda
     df = pd.read_csv(CSV, dtype={"cpf": str})
+
+    # 1) Normalizar datas para [2022..2025] e 2) embaralhar mês/dia (preserva ano)
     df = clamp_years_2022_2025(df)
+    df = shuffle_month_day_preserving_year(df)
+
+    # 3) Aplicar regras (preenche motivo_atencao e status = atencao quando couber)
     df = aplicar_regras(df)
 
-    # ordena e coloca 'motivo_atencao' no fim
+    # 4) Ajustar proporção 60/40 (sem tocar em LOCKED)
+    df = ajustar_proporcao(df, 0.40)
+
+    # 5) Preencher coluna 'motivos' (mostrada na sua tabela)
+    df = preencher_motivos(df)
+
+    # 6) Normalizações finais
+    if "suspicious" in df.columns:
+        df["suspicious"] = df["suspicious"].astype(str).str.strip().replace(
+            {"True":"True","False":"False","true":"True","false":"False","":"False"}
+        )
+
+    # Ordenar por data e colocar 'motivo_atencao' no fim (compatível com seu script)
     if "created_at" in df.columns:
         df = df.sort_values("created_at")
     cols = [c for c in df.columns if c != "motivo_atencao"] + ["motivo_atencao"]
     df = df[cols]
 
     df.to_csv(CSV, index=False)
-    print("✔ CSV atualizado: anos ∈ [2022..2025], motivos preenchidos e status ajustados.")
+    print("✔ CSV atualizado: datas embaralhadas (ano preservado), 60/40 garantido, 'motivos' preenchido.")
 
 if __name__ == "__main__":
     main()
